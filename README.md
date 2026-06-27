@@ -1,200 +1,593 @@
-# Señas 133 — Backend Spring Boot
+# Señas 133 / Mediación Directa
 
-Backend de prototipo funcional para **Señas 133: Emergencias sin Barreras**. El proyecto representa la capa servidor de una aplicación móvil para comunidad sorda, con envío de alertas, ubicación GPS, modo camuflaje, contingencia SMS, chat, solicitud de intérprete LSCh y panel de central simulado.
+Prototipo funcional de una aplicación móvil de asistencia digital para personas sordas, orientada al envío de alertas a una central CENCO simulada. El sistema permite registrar un usuario mediante Clave Única simulada, acceder con PIN, enviar alertas con ubicación, activar modo camuflaje, usar SMS como contingencia y visualizar las alertas desde un frontend CENCO con mapa.
 
-> Este backend es un prototipo académico. No se conecta realmente con Carabineros, CENCO ni proveedores SMS. La integración externa y SMS quedan simuladas o preparadas para ser reemplazadas.
+## 1. Estructura del proyecto
 
-## Tecnologías
-
-- Java 21
-- Spring Boot 3.3.5
-- Spring Web
-- Spring Data JPA
-- PostgreSQL
-- Bean Validation
-- BCrypt para PIN
-
-## Funcionalidades incluidas
-
-### Usuario y acceso seguro
-
-- Registro con nombre, RUT, número de documento, teléfono y PIN.
-- Login con PIN.
-- Sesión temporal en memoria mediante token Bearer.
-
-### Emergencias
-
-- Creación de alerta con categoría cromática:
-  - `DELITOS_GRAVES`
-  - `ASISTENCIA_VIAL`
-  - `SOSPECHA_PREVENCION`
-- Subtipo de incidente, por ejemplo `ROBO`, `ACCIDENTE_TRANSITO`, `VIOLENCIA_INTRAFAMILIAR`.
-- Envío de ubicación inicial.
-- Actualización de ubicación periódica.
-- Estado de emergencia para central: `ENVIADA`, `RECIBIDA`, `EN_ATENCION`, `CERRADA`, etc.
-
-### Modo camuflaje
-
-- Endpoint de configuración para que el frontend muestre un puzzle/rompecabezas.
-- Creación de emergencia desde modo camuflaje.
-- Registro de respuestas binarias ocultas, por ejemplo:
-  - agresor armado
-  - agresor presente
-  - víctima herida
-  - menores presentes
-  - salida bloqueada
-- Visualización de contexto oculto desde la central.
-
-### SMS de contingencia
-
-- El backend entrega configuración de número destino.
-- El backend prepara el texto del SMS.
-- La app móvil debe abrir la app Mensajes del teléfono con el texto listo.
-- Cuando vuelve internet, la app sincroniza el SMS enviado con el backend.
-
-Importante: si el teléfono no tiene internet, no puede contactar al backend. El SMS se envía desde el teléfono del usuario hacia el número definido como central.
-
-### Intérprete LSCh
-
-- Solicitud de intérprete asociada a una emergencia.
-- Asignación simulada de intérprete y URL de sala de videollamada.
-- Cambio de estado de la solicitud.
-
-### Chat y eventos en vivo
-
-- Chat simple asociado a la emergencia.
-- Stream SSE para que el panel central reciba eventos en vivo:
-
-```http
-GET /api/central/stream
-```
-
-## Estructura principal
+La estructura recomendada del proyecto es la siguiente:
 
 ```text
-src/main/java/com/mediaciondirecta/
-├── config
-├── controller
-├── dto
-├── entity
-├── enums
-├── exception
-├── integration
-├── repository
-└── service
+senas133/
+├── senas133-backend-mysql/
+├── senas133-app-movil/
+└── senas133-cenco-frontend/
 ```
 
-## Crear base de datos manualmente
-
-El proyecto está configurado para que Spring Boot **no cree las tablas automáticamente**:
-
-```properties
-spring.jpa.hibernate.ddl-auto=validate
-```
-
-Para crear la base de datos en Windows:
-
-1. Revisa `Scripts/crear_db.bat` y ajusta la ruta de `psql.exe` si es necesario.
-2. Revisa la contraseña del usuario `postgres`.
-3. Ejecuta:
-
-```cmd
-Scripts\crear_db.bat
-```
-
-El script crea la base:
+Cada carpeta cumple una función distinta:
 
 ```text
-mediacion_directa
+senas133-backend-mysql     Backend Spring Boot + MySQL
+senas133-app-movil         Frontend móvil Ionic/Angular
+senas133-cenco-frontend    Frontend web CENCO simulado
 ```
 
-y carga datos de prueba.
+## 2. Tecnologías utilizadas
 
-Usuarios de prueba:
+### Backend
 
 ```text
-RUT: 12345678-9
-PIN: 1234
-
-RUT: 11111111-1
-PIN: 1234
+Java 17+
+Spring Boot
+Spring Data JPA
+MySQL
+Maven
+Docker
 ```
 
-## Configuración
-
-Archivo principal:
+### Frontend móvil
 
 ```text
-src/main/resources/application.properties
+Angular
+Ionic
+Capacitor
+TypeScript
 ```
 
-Propiedades importantes:
+### Frontend CENCO
 
-```properties
-server.port=8080
-server.address=0.0.0.0
-spring.datasource.url=jdbc:postgresql://localhost:5432/mediacion_directa
-spring.datasource.username=postgres
-spring.datasource.password=1234
-app.sms.center-phone=+56900000000
+```text
+Angular
+Ionic
+Leaflet
+OpenStreetMap
+TypeScript
 ```
 
-Cambia `app.sms.center-phone` por el número de teléfono que actuará como central simulada.
+### Base de datos
 
-## Ejecutar
+```text
+MySQL 8
+```
+
+## 3. Programas necesarios
+
+Para ejecutar el proyecto sin Docker se necesita instalar:
+
+```text
+Java JDK 17 o superior
+Maven
+Node.js 20 o superior
+npm
+Ionic CLI
+MySQL Server 8
+Visual Studio Code o IDE similar
+```
+
+Instalar Ionic CLI:
+
+```bash
+npm install -g @ionic/cli
+```
+
+Para ejecutar con Docker se necesita:
+
+```text
+Docker Desktop
+Docker Compose
+```
+
+Opcional para generar APK:
+
+```text
+Android Studio
+Capacitor
+```
+
+## 4. Ejecución con Docker
+
+### 4.1. Ejecutar solo backend y MySQL
+
+Entrar a la carpeta del backend:
+
+```bash
+cd senas133-backend-mysql
+```
+
+Ejecutar:
+
+```bash
+docker compose up --build
+```
+
+Esto levanta:
+
+```text
+MySQL:   localhost:3306
+Backend: http://localhost:8080
+```
+
+### 4.2. Ejecutar backend, MySQL, app móvil y CENCO
+
+La estructura debe ser:
+
+```text
+senas133/
+├── senas133-backend-mysql/
+├── senas133-app-movil/
+└── senas133-cenco-frontend/
+```
+
+Entrar a la carpeta del backend:
+
+```bash
+cd senas133-backend-mysql
+```
+
+Ejecutar:
+
+```bash
+docker compose -f docker-compose.full.yml up --build
+```
+
+Esto levanta:
+
+```text
+Backend:       http://localhost:8080
+App móvil:     http://localhost:8100
+CENCO:         http://localhost:4200
+MySQL:         localhost:3306
+```
+
+### 4.3. Reiniciar base de datos desde cero
+
+Si se desea borrar la base de datos y volver a cargar los datos de prueba:
+
+```bash
+docker compose -f docker-compose.full.yml down -v
+docker compose -f docker-compose.full.yml up --build
+```
+
+El parámetro `-v` elimina el volumen de MySQL.
+
+## 5. Ejecución sin Docker
+
+### 5.1. Crear base de datos MySQL
+
+Entrar a MySQL:
+
+```bash
+mysql -u root -p
+```
+
+Crear base de datos y usuario:
+
+```sql
+CREATE DATABASE mediacion_directa;
+CREATE USER 'senas_user'@'localhost' IDENTIFIED BY 'senas_pass';
+GRANT ALL PRIVILEGES ON mediacion_directa.* TO 'senas_user'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+Salir de MySQL:
+
+```sql
+EXIT;
+```
+
+### 5.2. Cargar datos de prueba
+
+Desde la carpeta del backend:
+
+```bash
+cd senas133-backend-mysql
+```
+
+Ejecutar:
+
+```bash
+mysql -u senas_user -p mediacion_directa < Scripts/schema-data.sql
+```
+
+Contraseña:
+
+```text
+senas_pass
+```
+
+### 5.3. Ejecutar backend
+
+Desde la carpeta:
+
+```bash
+cd senas133-backend-mysql
+```
+
+Ejecutar:
 
 ```bash
 mvn spring-boot:run
 ```
 
-## Probar endpoints
+Si Maven no está instalado pero existe `mvnw.cmd`, usar:
 
-Usa el archivo:
+```bash
+.\mvnw.cmd spring-boot:run
+```
+
+El backend queda disponible en:
 
 ```text
-requests.http
+http://localhost:8080
 ```
 
-Flujo sugerido:
+### 5.4. Ejecutar app móvil
 
-1. Login con PIN.
-2. Copiar el token recibido.
-3. Reemplazar `@token` en `requests.http`.
-4. Crear emergencia normal o camuflada.
-5. Consultar `/api/central/emergencias/activas`.
-6. Guardar respuestas ocultas.
-7. Preparar SMS.
-8. Solicitar intérprete.
+En otra terminal:
 
-## Endpoints principales
+```bash
+cd senas133-app-movil
+npm install
+ionic serve --port 8100
+```
 
-```http
-POST /api/auth/registro
-POST /api/auth/login-pin
-GET  /api/catalogo/emergencias
-POST /api/emergencias
-POST /api/emergencias/{id}/ubicacion
-GET  /api/central/emergencias/activas
-GET  /api/central/emergencias/{id}/contexto
-GET  /api/central/stream
+Si Ionic da problemas con los argumentos de puerto, usar:
+
+```bash
+npx ng serve --port 8100
+```
+
+Abrir:
+
+```text
+http://localhost:8100
+```
+
+### 5.5. Ejecutar CENCO simulado
+
+En otra terminal:
+
+```bash
+cd senas133-cenco-frontend
+npm install
+ionic serve --port 4200
+```
+
+Si Ionic da problemas:
+
+```bash
+npx ng serve --port 4200
+```
+
+Abrir:
+
+```text
+http://localhost:4200
+```
+
+## 6. Rutas principales para probar
+
+### Backend
+
+```text
+http://localhost:8080/api/catalogo/emergencias
+http://localhost:8080/api/camuflaje/configuracion
+http://localhost:8080/api/central/emergencias/activas
+```
+
+La ruta:
+
+```text
+http://localhost:8080
+```
+
+puede mostrar un error tipo `No static resource`, lo cual es normal porque el backend es una API REST y no una página web.
+
+### App móvil
+
+```text
+http://localhost:8100
+```
+
+### CENCO simulado
+
+```text
+http://localhost:4200
+```
+
+## 7. Flujo básico de prueba
+
+1. Abrir la app móvil:
+
+```text
+http://localhost:8100
+```
+
+2. Entrar con Clave Única simulada o completar perfil.
+
+3. Crear PIN de acceso rápido.
+
+4. Ingresar con PIN.
+
+5. Enviar alerta.
+
+6. Abrir CENCO:
+
+```text
+http://localhost:4200
+```
+
+7. Ver la alerta recibida en la barra lateral.
+
+8. Ver ubicación en el mapa.
+
+9. Cambiar estado de la alerta a:
+
+```text
+RECIBIDA
+PATRULLA_DESPACHADA
+EN_ATENCION
+CERRADA
+```
+
+10. Volver a la app móvil y verificar que cambie el estado.
+
+## 8. Flujo del modo camuflaje
+
+El modo camuflaje funciona así:
+
+```text
+Pantalla de inicio
+→ Botón camuflaje
+→ Puzzle
+→ Arrastrar pieza
+→ Aparecen preguntas literales
+→ Al responder se envía alerta a CENCO
+→ Se muestra “Calculando puntaje”
+→ Cuando CENCO confirma, aparece el puntaje obtenido
+```
+
+Endpoints principales:
+
+```text
 GET  /api/camuflaje/configuracion
 POST /api/camuflaje/emergencias
-POST /api/camuflaje/emergencias/{id}/respuestas
-GET  /api/sms/configuracion
-POST /api/sms/preparar
-POST /api/sms/sincronizar
-POST /api/emergencias/{id}/interprete/solicitar
-PATCH /api/central/emergencias/{id}/interprete/asignar
-GET  /api/emergencias/{id}/chat
-POST /api/emergencias/{id}/chat
+GET  /api/camuflaje/emergencias/{id}/resultado
 ```
 
-## Limitaciones del prototipo
+## 9. Partes del código que se deben cambiar para pruebas
 
-- No usa JWT real; usa tokens en memoria.
-- No envía SMS automáticamente.
-- No usa videollamada real; guarda una URL simulada.
-- No integra un sistema CENCO real; se simula con `SistemaExternoClient`.
-- No implementa cifrado de datos sensibles a nivel base de datos.
+## 9.1. Cambiar IP del backend para probar desde celular
 
-Para una versión real se debería agregar autenticación robusta, auditoría, cifrado, control de roles, gestión de consentimiento, trazabilidad y validación legal/técnica de la integración externa.
+Si todo se prueba desde el mismo computador, usar:
+
+```text
+localhost
+```
+
+Si se prueba desde un teléfono real conectado a la misma red WiFi, no usar `localhost`. Se debe usar la IP del computador.
+
+En Windows, obtener IP con:
+
+```bash
+ipconfig
+```
+
+Buscar:
+
+```text
+Dirección IPv4
+```
+
+Ejemplo:
+
+```text
+192.168.1.45
+```
+
+### App móvil
+
+Archivo:
+
+```text
+senas133-app-movil/src/environments/environment.ts
+```
+
+Para localhost:
+
+```ts
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:8080/api'
+};
+```
+
+Para teléfono real:
+
+```ts
+export const environment = {
+  production: false,
+  apiUrl: 'http://192.168.1.45:8080/api'
+};
+```
+
+También revisar:
+
+```text
+senas133-app-movil/src/environments/environment.prod.ts
+```
+
+si se hará build o APK.
+
+### CENCO simulado
+
+Archivo:
+
+```text
+senas133-cenco-frontend/src/environments/environment.ts
+```
+
+Para localhost:
+
+```ts
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:8080/api'
+};
+```
+
+Para red local:
+
+```ts
+export const environment = {
+  production: false,
+  apiUrl: 'http://192.168.1.45:8080/api'
+};
+```
+
+## 9.2. Cambiar CORS en el backend
+
+Archivo:
+
+```text
+senas133-backend-mysql/src/main/resources/application.properties
+```
+
+Para localhost:
+
+```properties
+app.cors.allowed-origins=http://localhost:4200,http://localhost:8100,http://localhost:5173,http://localhost:3000
+```
+
+Para probar desde celular con IP local:
+
+```properties
+app.cors.allowed-origins=http://localhost:4200,http://localhost:8100,http://192.168.1.45:4200,http://192.168.1.45:8100
+```
+
+El backend debe tener:
+
+```properties
+server.address=0.0.0.0
+server.port=8080
+```
+
+## 9.3. Cambiar número que recibe SMS
+
+Archivo:
+
+```text
+senas133-backend-mysql/src/main/resources/application.properties
+```
+
+Buscar:
+
+```properties
+app.sms.center-phone=+56900000000
+```
+
+Cambiar por el número que recibirá los SMS durante la prueba:
+
+```properties
+app.sms.center-phone=+56912345678
+```
+
+Si se usa Docker, revisar también:
+
+```text
+senas133-backend-mysql/docker-compose.yml
+senas133-backend-mysql/docker-compose.full.yml
+```
+
+Buscar:
+
+```yaml
+SMS_CENTER_PHONE: +56900000000
+```
+
+Cambiar por:
+
+```yaml
+SMS_CENTER_PHONE: +56912345678
+```
+
+## 9.4. Configuración de base de datos
+
+Archivo:
+
+```text
+senas133-backend-mysql/src/main/resources/application.properties
+```
+
+Configuración local esperada:
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/mediacion_directa?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Santiago
+spring.datasource.username=senas_user
+spring.datasource.password=senas_pass
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+```
+
+Si se usa Docker, la URL debe apuntar al servicio MySQL:
+
+```properties
+spring.datasource.url=${DB_URL:jdbc:mysql://localhost:3306/mediacion_directa?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Santiago}
+```
+
+Y en Docker Compose:
+
+```yaml
+DB_URL: jdbc:mysql://mysql:3306/mediacion_directa?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Santiago
+DB_USERNAME: senas_user
+DB_PASSWORD: senas_pass
+```
+
+## 10. Generar APK Android
+
+Desde la carpeta del frontend móvil:
+
+```bash
+cd senas133-app-movil
+ionic build
+npx cap add android
+npx cap sync android
+npx cap open android
+```
+
+Luego Android Studio permite ejecutar o generar la APK.
+
+Antes de generar la APK, revisar:
+
+```text
+src/environments/environment.prod.ts
+```
+
+Si se probará desde un teléfono real, debe apuntar a la IP del computador o a una URL pública.
+
+Ejemplo:
+
+```ts
+export const environment = {
+  production: true,
+  apiUrl: 'http://192.168.1.45:8080/api'
+};
+```
+
+## 11. Datos de prueba
+
+Los datos de prueba se cargan desde:
+
+```text
+senas133-backend-mysql/Scripts/schema-data.sql
+```
+
+El PIN de prueba puede variar según el script. Revisar el archivo `schema-data.sql` para confirmar usuarios disponibles.
