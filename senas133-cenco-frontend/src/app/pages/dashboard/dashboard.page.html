@@ -1,0 +1,235 @@
+<ion-header class="topbar">
+  <ion-toolbar>
+    <ion-title>
+      <div class="brand">
+        <span class="brand-icon"><ion-icon name="map-outline"></ion-icon></span>
+        <div>
+          <strong>CENCO Simulado</strong>
+          <small>Recepción y despacho de alertas Señas 133</small>
+        </div>
+      </div>
+    </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-chip [class.online]="conectadoStream" [class.offline]="!conectadoStream">
+        <span class="dot"></span>
+        {{ conectadoStream ? 'En vivo' : 'Reconectando' }}
+      </ion-chip>
+      <ion-button fill="clear" (click)="refrescar()">
+        <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <section class="dashboard-shell">
+    <aside class="alerts-panel">
+      <div class="panel-header">
+        <div>
+          <p>Alertas activas</p>
+          <h2>{{ estadisticas.totalActivas }}</h2>
+        </div>
+        <ion-spinner *ngIf="cargando" name="crescent"></ion-spinner>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card danger">
+          <span>{{ estadisticas.sinConfirmar }}</span>
+          <small>Sin confirmar</small>
+        </div>
+        <div class="stat-card patrol">
+          <span>{{ estadisticas.patrullasDespachadas }}</span>
+          <small>Patrulla</small>
+        </div>
+        <div class="stat-card covert">
+          <span>{{ estadisticas.camufladas }}</span>
+          <small>Camuflaje</small>
+        </div>
+      </div>
+
+      <ion-input
+        class="search-input"
+        placeholder="Buscar por usuario, estado o tipo"
+        [(ngModel)]="textoBusqueda"
+        (ionInput)="aplicarFiltros()"
+      ></ion-input>
+
+      <ion-segment [(ngModel)]="filtro" (ionChange)="aplicarFiltros()" scrollable="true" class="filter-segment">
+        <ion-segment-button value="TODAS">Todas</ion-segment-button>
+        <ion-segment-button value="ENVIADA">Enviada</ion-segment-button>
+        <ion-segment-button value="RECIBIDA">Recibida</ion-segment-button>
+        <ion-segment-button value="PATRULLA_DESPACHADA">Patrulla</ion-segment-button>
+      </ion-segment>
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+
+      <div class="alerts-list">
+        <button
+          type="button"
+          class="alert-row"
+          *ngFor="let alerta of emergenciasFiltradas"
+          [class.selected]="emergenciaSeleccionada?.id === alerta.id"
+          [class.red]="claseTipo(alerta.tipo) === 'red'"
+          [class.orange]="claseTipo(alerta.tipo) === 'orange'"
+          [class.blue]="claseTipo(alerta.tipo) === 'blue'"
+          (click)="seleccionarEmergencia(alerta)"
+        >
+          <div class="alert-icon" [class.red]="claseTipo(alerta.tipo) === 'red'" [class.orange]="claseTipo(alerta.tipo) === 'orange'" [class.blue]="claseTipo(alerta.tipo) === 'blue'" [class.gray]="claseTipo(alerta.tipo) === 'gray'">
+            <ion-icon [name]="iconoTipo(alerta.tipo)"></ion-icon>
+          </div>
+
+          <div class="alert-main">
+            <div class="alert-title">
+              <strong>#{{ alerta.id }} · {{ formatearTipo(alerta.tipo) }}</strong>
+              <span class="time">{{ fechaCorta(alerta.creadoEn) }}</span>
+            </div>
+            <p>{{ formatearSubtipo(alerta.subtipo) }}</p>
+            <div class="row-meta">
+              <ion-badge>{{ formatearEstado(alerta.estado) }}</ion-badge>
+              <span *ngIf="alerta.modoCamuflaje" class="covert-tag">Modo camuflaje</span>
+            </div>
+          </div>
+        </button>
+
+        <div class="empty" *ngIf="!cargando && emergenciasFiltradas.length === 0">
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+          <strong>No hay alertas en esta vista</strong>
+          <span>Cuando la app móvil envíe una emergencia, aparecerá aquí.</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="map-column">
+      <div id="mapa-cenco" class="map-container"></div>
+    </main>
+
+    <aside class="detail-panel">
+      <ng-container *ngIf="emergenciaSeleccionada as alerta; else sinSeleccion">
+        <div class="detail-header" [class.red]="claseTipo(alerta.tipo) === 'red'" [class.orange]="claseTipo(alerta.tipo) === 'orange'" [class.blue]="claseTipo(alerta.tipo) === 'blue'" [class.gray]="claseTipo(alerta.tipo) === 'gray'">
+          <div class="type-icon">
+            <ion-icon [name]="iconoTipo(alerta.tipo)"></ion-icon>
+          </div>
+          <div>
+            <span>Alerta #{{ alerta.id }}</span>
+            <h2>{{ formatearTipo(alerta.tipo) }}</h2>
+            <p>{{ formatearSubtipo(alerta.subtipo) }}</p>
+          </div>
+        </div>
+
+        <ion-card class="status-card">
+          <ion-card-content>
+            <div class="status-line">
+              <span>Estado actual</span>
+              <ion-badge>{{ formatearEstado(alerta.estado) }}</ion-badge>
+            </div>
+            <p *ngIf="alerta.codigoExterno">Código externo simulado: {{ alerta.codigoExterno }}</p>
+            <p>Canal: {{ alerta.canal }}</p>
+            <p *ngIf="alerta.modoCamuflaje">Recibida desde interfaz de camuflaje.</p>
+          </ion-card-content>
+        </ion-card>
+
+        <section class="actions-block">
+          <h3>Acciones CENCO</h3>
+          <div class="action-grid">
+            <ion-button color="success" (click)="cambiarEstado('RECIBIDA')">
+              <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+              Recibir
+            </ion-button>
+            <ion-button color="warning" (click)="cambiarEstado('PATRULLA_DESPACHADA')">
+              <ion-icon name="car-sport-outline" slot="start"></ion-icon>
+              Patrulla
+            </ion-button>
+            <ion-button color="primary" (click)="cambiarEstado('EN_ATENCION')">
+              <ion-icon name="people-outline" slot="start"></ion-icon>
+              En atención
+            </ion-button>
+            <ion-button color="medium" (click)="cambiarEstado('CERRADA')">
+              <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+              Cerrar
+            </ion-button>
+          </div>
+        </section>
+
+        <section class="info-block">
+          <h3>Datos del usuario</h3>
+          <ion-list lines="none">
+            <ion-item>
+              <ion-icon name="person-circle-outline" slot="start"></ion-icon>
+              <ion-label>
+                <span>Nombre</span>
+                <strong>{{ alerta.nombreUsuario }}</strong>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-icon name="location-outline" slot="start"></ion-icon>
+              <ion-label>
+                <span>Dirección registrada</span>
+                <strong>{{ alerta.direccionPrincipalUsuario || 'Sin dirección registrada' }}</strong>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-icon name="alert-circle-outline" slot="start"></ion-icon>
+              <ion-label>
+                <span>Teléfono</span>
+                <strong>{{ alerta.telefonoUsuario || 'Sin teléfono' }}</strong>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </section>
+
+        <section class="info-block">
+          <h3>Ubicación recibida</h3>
+          <div class="location-card">
+            <span>Latitud</span>
+            <strong>{{ alerta.latitud ?? 'N/D' }}</strong>
+            <span>Longitud</span>
+            <strong>{{ alerta.longitud ?? 'N/D' }}</strong>
+            <span>Precisión</span>
+            <strong>{{ alerta.precisionMetros ?? 'N/D' }} m</strong>
+          </div>
+          <small *ngIf="ubicacionesSeleccionadas.length > 1">
+            Se recibieron {{ ubicacionesSeleccionadas.length }} actualizaciones de ubicación. La línea punteada en el mapa muestra el movimiento reportado.
+          </small>
+        </section>
+
+        <section class="info-block" *ngIf="alerta.detallePosteriorPendiente || alerta.lugarSeguroParaMasInformacion !== null">
+          <h3>Información posterior</h3>
+          <p>Lugar seguro para entregar más información:</p>
+          <strong>{{ alerta.lugarSeguroParaMasInformacion === true ? 'Sí' : alerta.lugarSeguroParaMasInformacion === false ? 'No' : 'Pendiente' }}</strong>
+        </section>
+
+        <section class="info-block" *ngIf="contextoCamuflaje.length > 0">
+          <h3>Contexto encubierto</h3>
+          <div class="context-row" *ngFor="let item of contextoCamuflaje">
+            <span>{{ item.textoPregunta || item.codigoPregunta }}</span>
+            <strong [class.yes]="item.respuesta" [class.no]="!item.respuesta">{{ item.respuesta ? 'Sí' : 'No' }}</strong>
+          </div>
+        </section>
+
+        <section class="info-block interpreter" *ngIf="alerta.requiereInterprete">
+          <h3>Intérprete LSCh</h3>
+          <ion-input label="Nombre intérprete" labelPlacement="stacked" [(ngModel)]="nombreInterprete"></ion-input>
+          <ion-input label="URL sala de video" labelPlacement="stacked" [(ngModel)]="urlSalaVideo"></ion-input>
+          <div class="interpreter-actions">
+            <ion-button expand="block" color="dark" (click)="asignarInterprete()">
+              <ion-icon name="videocam-outline" slot="start"></ion-icon>
+              Asignar intérprete
+            </ion-button>
+            <ion-button expand="block" fill="outline" color="dark" (click)="iniciarLlamada()">
+              Iniciar llamada
+            </ion-button>
+          </div>
+        </section>
+      </ng-container>
+
+      <ng-template #sinSeleccion>
+        <div class="empty detail-empty">
+          <ion-icon name="map-outline"></ion-icon>
+          <strong>Selecciona una alerta</strong>
+          <span>El detalle se mostrará en este panel.</span>
+        </div>
+      </ng-template>
+    </aside>
+  </section>
+</ion-content>

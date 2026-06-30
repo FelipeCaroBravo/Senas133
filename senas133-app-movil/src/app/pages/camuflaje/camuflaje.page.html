@@ -1,0 +1,30 @@
+<ion-content [fullscreen]="true">
+  <main class="page-shell game-shell">
+    <header class="game-header">
+      <button class="back-btn" type="button" (click)="volver()">‹</button>
+      <strong>SCORE: 14,320</strong>
+      <span>▭</span>
+    </header>
+
+    <section class="board" (dragover)="permitirSoltar($event)" (drop)="colocarPieza()" (click)="colocarPieza()">
+      <div class="cell" *ngFor="let c of [].constructor(36); let i = index" [class.purple]="i === 12 || i === 13 || i === 18 || i === 19 || i === 24 || i === 25 || i === 30 || i === 31" [class.blue]="i === 4 || i === 5 || i === 9 || i === 10 || i === 11 || i === 15 || i === 16 || i === 20 || i === 21 || i === 26"></div>
+    </section>
+
+    <section class="piece" draggable="true" (dragend)="colocarPieza()" *ngIf="!piezaColocada">
+      <span></span><span></span><span></span><span></span>
+      <small>Drag piece to board</small>
+    </section>
+
+    <section class="hidden-question" *ngIf="piezaColocada && !enviando">
+      <p>{{ preguntas[indice]?.textoCamuflado }}</p>
+      <div>
+        <button type="button" (click)="responder(false)">No</button>
+        <button type="button" (click)="responder(true)">Sí</button>
+      </div>
+    </section>
+
+    <section class="hidden-question" *ngIf="enviando">
+      <p>Guardando progreso...</p>
+    </section>
+  </main>
+</ion-content>

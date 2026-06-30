@@ -1,0 +1,19 @@
+<ion-content [fullscreen]="true">
+  <main class="page-shell detail-shell">
+    <header class="category-header" [ngClass]="claseColor">
+      <button class="back-btn light" type="button" (click)="volver()">‹</button>
+      <h1>{{ titulo }}</h1>
+      <button class="help-floating" type="button">?</button>
+    </header>
+
+    <section class="options-list">
+      <button class="option-card" type="button" *ngFor="let opcion of opciones" (click)="seleccionar(opcion)">
+        <span class="option-icon" [ngClass]="claseColor">{{ opcion.icono }}</span>
+        <div>
+          <strong>{{ opcion.titulo }}</strong>
+          <small>{{ opcion.descripcion }}</small>
+        </div>
+      </button>
+    </section>
+  </main>
+</ion-content>

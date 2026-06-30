@@ -1,0 +1,54 @@
+<ion-content [fullscreen]="true">
+  <main class="page-shell emergencias-shell">
+    <header class="top-emergency">
+      <button class="back-btn" type="button" (click)="volver()">‹</button>
+      <div>
+        <h1>Emergencia</h1>
+        <p><span></span> Conectado a Central</p>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" type="button" (click)="perfil()">♙</button>
+        <button class="icon-btn" type="button" (click)="ayudaAbierta = true">?</button>
+      </div>
+    </header>
+
+    <section class="main-red-wrap">
+      <button class="red-card" type="button" (click)="enviarRojaInmediata()" [disabled]="enviandoRoja">
+        <span class="big-icon">♢</span>
+        <strong>Emergencia</strong>
+        <small>Robos, asaltos o violencia</small>
+      </button>
+    </section>
+
+    <nav class="bottom-tabs">
+      <button type="button" (click)="abrirCategoria('ASISTENCIA_VIAL')">
+        <span>🚕</span>
+        <strong>Accidente</strong>
+      </button>
+      <button type="button" (click)="abrirCategoria('SOSPECHA_PREVENCION')">
+        <span>👁</span>
+        <strong>Algo Extraño</strong>
+      </button>
+    </nav>
+
+    <ion-modal [isOpen]="ayudaAbierta" (didDismiss)="ayudaAbierta = false">
+      <ng-template>
+        <ion-content>
+          <section class="help-overlay">
+            <div class="help-card">
+              <div class="gif-box">
+                <div>▭</div>
+                <span>GIF Lengua de Señas</span>
+              </div>
+              <div class="help-text">
+                <h2>¿Cómo usar la alerta?</h2>
+                <p>Presiona el botón rojo grande al centro para enviar tu ubicación a la policía inmediatamente.</p>
+                <button class="primary-btn" type="button" (click)="ayudaAbierta = false">Entendido</button>
+              </div>
+            </div>
+          </section>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+  </main>
+</ion-content>

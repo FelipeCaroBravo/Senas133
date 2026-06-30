@@ -1,0 +1,18 @@
+<ion-content [fullscreen]="true">
+  <main class="page-shell pregunta-shell">
+    <button class="back-btn pregunta-back" type="button" (click)="volver()">‹</button>
+
+    <section class="status-top" [class.waiting]="!recibida">
+      <span>{{ recibida ? '✓' : '…' }}</span>
+      <strong>{{ recibida ? 'Alerta recibida por la central' : 'Esperando confirmación de la central' }}</strong>
+    </section>
+
+    <section class="question-card">
+      <h1>¿Estás en un lugar seguro para dar más información?</h1>
+      <div class="question-actions">
+        <button class="secondary-btn" type="button" (click)="no()">NO</button>
+        <button class="primary-btn" type="button" (click)="si()">SÍ</button>
+      </div>
+    </section>
+  </main>
+</ion-content>

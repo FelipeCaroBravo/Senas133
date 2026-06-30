@@ -1,0 +1,33 @@
+<ion-content [fullscreen]="true">
+  <main class="page-shell profile-shell">
+    <header class="header-simple">
+      <button class="back-btn" type="button" (click)="volver()">‹</button>
+      <h1>Mi Perfil</h1>
+      <div class="header-actions">
+        <button class="icon-btn" type="button">?</button>
+      </div>
+    </header>
+
+    <section class="screen-padding">
+      <div class="avatar">♙</div>
+
+      <label class="form-label">Dirección Actual</label>
+      <div class="editable-field">
+        <input [(ngModel)]="direccionPrincipal" placeholder="Av. Los Carrera 123, Depto 402" />
+        <span>✎</span>
+      </div>
+
+      <label class="form-label">Número de Teléfono</label>
+      <div class="editable-field">
+        <input [(ngModel)]="telefono" placeholder="+56 9 1234 5678" />
+        <span>✎</span>
+      </div>
+
+      <button class="change-pin" type="button">Cambiar PIN de acceso</button>
+    </section>
+
+    <div class="bottom-action">
+      <button class="primary-btn" type="button" (click)="guardar()" [disabled]="guardando">Guardar Cambios</button>
+    </div>
+  </main>
+</ion-content>

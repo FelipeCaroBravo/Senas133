@@ -1,0 +1,47 @@
+<ion-content [fullscreen]="true">
+  <main class="page-shell active-shell" [ngClass]="claseColor">
+    <button class="back-btn active-back" type="button" (click)="volver()">‹</button>
+
+    <section class="active-top">
+      <div class="siren">🚨</div>
+      <h1>Alerta Activada</h1>
+      <p>{{ subtitulo }}</p>
+    </section>
+
+    <section class="status-card">
+      <div class="status-row">
+        <span class="ok">✓</span>
+        <div>
+          <strong>Central Notificada</strong>
+          <small>{{ centralNotificada ? 'Tu reporte ha sido recibido y está en proceso.' : 'Tu reporte fue enviado. Esperando confirmación.' }}</small>
+        </div>
+      </div>
+
+      <div class="status-row" *ngIf="emergencia?.tipo === 'DELITOS_GRAVES'; else patrullaRow">
+        <span class="gps">⌖</span>
+        <div>
+          <strong>Ubicación compartida</strong>
+          <small>Precisión: {{ emergencia?.precisionMetros || 5 }} metros</small>
+        </div>
+      </div>
+
+      <ng-template #patrullaRow>
+        <div class="status-row">
+          <span class="shield">♢</span>
+          <div>
+            <strong>Carabinero en camino</strong>
+            <small>{{ patrulla ? 'Unidad despachada hacia tu ubicación.' : 'Esperando despacho de unidad.' }}</small>
+          </div>
+        </div>
+      </ng-template>
+    </section>
+
+    <button class="interpreter-btn" type="button" (click)="conectarInterprete()">
+      <span>▭</span>
+      <div>
+        <strong>Conectar con Intérprete</strong>
+        <small>Videollamada segura</small>
+      </div>
+    </button>
+  </main>
+</ion-content>

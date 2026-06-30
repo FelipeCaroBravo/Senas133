@@ -1,0 +1,65 @@
+.inicio-shell {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 34px;
+}
+
+.brand-block {
+  text-align: center;
+  margin-top: 130px;
+
+  .shield-circle {
+    margin: 0 auto 20px;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: #dceaff;
+    color: #2463ff;
+    display: grid;
+    place-items: center;
+    font-size: 64px;
+    font-weight: 900;
+  }
+
+  h1 {
+    margin: 0;
+    color: var(--app-ink);
+    font-size: 30px;
+    line-height: 1.1;
+    font-weight: 900;
+  }
+
+  p {
+    margin: 14px 0 0;
+    color: #5f6d83;
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
+
+.actions-block {
+  margin-top: 56px;
+}
+
+.link-btn {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #637089;
+  margin-top: 24px;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.ghost-btn {
+  position: absolute;
+  right: 34px;
+  bottom: 32px;
+  border: 0;
+  background: transparent;
+  font-size: 26px;
+  opacity: 0.25;
+}

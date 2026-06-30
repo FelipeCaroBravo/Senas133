@@ -1,0 +1,56 @@
+.pin-shell {
+  min-height: 100%;
+  background: #fff;
+  position: relative;
+}
+
+.pin-back {
+  position: absolute;
+  top: 24px;
+  left: 28px;
+}
+
+.pin-content {
+  padding: 118px 54px 0;
+  text-align: center;
+
+  h1 {
+    color: var(--app-ink);
+    font-size: 26px;
+    font-weight: 900;
+    margin-bottom: 22px;
+  }
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 44px 52px;
+  margin-top: 30px;
+
+  button {
+    border: 0;
+    background: transparent;
+    color: var(--app-ink);
+    font-size: 30px;
+    font-weight: 500;
+    padding: 10px;
+  }
+
+  .delete {
+    color: #526174;
+    font-size: 28px;
+  }
+}
+
+.recover {
+  border: 0;
+  background: transparent;
+  position: absolute;
+  bottom: 36px;
+  width: 100%;
+  left: 0;
+  color: #536176;
+  font-size: 14px;
+  font-weight: 800;
+}

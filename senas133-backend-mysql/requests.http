@@ -1,0 +1,200 @@
+@baseUrl = http://localhost:8080
+@usuarioId = 1
+@emergenciaId = 1
+@camuflajeId = 3
+
+### 1) Simular Clave Única sin datos: devuelve usuario demo
+POST {{baseUrl}}/api/auth/clave-unica/mock
+Content-Type: application/json
+
+{}
+
+### 2) Completar perfil usando id, compatible con frontend móvil
+POST {{baseUrl}}/api/usuarios/{{usuarioId}}/completar-perfil
+Content-Type: application/json
+
+{
+  "direccionPrincipal": "Av. Los Carrera 123, Depto 402",
+  "telefono": "+56900000001",
+  "pin": "1234"
+}
+
+### 3) Login posterior con PIN usando usuarioId, compatible con frontend móvil
+POST {{baseUrl}}/api/auth/login-pin
+Content-Type: application/json
+
+{
+  "usuarioId": 1,
+  "pin": "1234"
+}
+
+### 3B) Login con PIN y token opcional para pruebas protegidas
+POST {{baseUrl}}/api/auth/login-pin-token
+Content-Type: application/json
+
+{
+  "rut": "11111111-1",
+  "pin": "1234"
+}
+
+### 4) Ver perfil por id
+GET {{baseUrl}}/api/usuarios/{{usuarioId}}
+
+### 5) Catálogo de emergencias para frontend móvil
+GET {{baseUrl}}/api/catalogo/emergencias
+
+### 6) Alerta roja inmediata: se envía a CENCO sin detalle previo
+POST {{baseUrl}}/api/emergencias
+Content-Type: application/json
+
+{
+  "usuarioId": 1,
+  "tipo": "DELITOS_GRAVES",
+  "subtipo": null,
+  "mensaje": "Alerta silenciosa",
+  "fraseCodigo": "ALERTA_SILENCIOSA",
+  "modoCamuflaje": false,
+  "requiereInterprete": true,
+  "canal": "INTERNET",
+  "latitud": -36.82699,
+  "longitud": -73.04977,
+  "precisionMetros": 5
+}
+
+### 7) CENCO simulado: listar emergencias activas
+GET {{baseUrl}}/api/central/emergencias/activas
+
+### 8) CENCO simulado: confirmar recepción
+PATCH {{baseUrl}}/api/central/emergencias/{{emergenciaId}}/estado
+Content-Type: application/json
+
+{
+  "estado": "RECIBIDA"
+}
+
+### 9) App móvil: marcar si puede dar más información
+PATCH {{baseUrl}}/api/emergencias/{{emergenciaId}}/lugar-seguro
+Content-Type: application/json
+
+{
+  "lugarSeguroParaMasInformacion": true
+}
+
+### 10) App móvil: completar detalle rojo
+PATCH {{baseUrl}}/api/emergencias/{{emergenciaId}}/detalle
+Content-Type: application/json
+
+{
+  "subtipo": "ROBO_CON_VIOLENCIA",
+  "mensaje": "Robo con violencia",
+  "fraseCodigo": "FRASE_ROBO_VIOLENCIA",
+  "lugarSeguroParaMasInformacion": true
+}
+
+### 11) Crear alerta naranja con detalle antes de enviar
+POST {{baseUrl}}/api/emergencias
+Content-Type: application/json
+
+{
+  "usuarioId": 1,
+  "tipo": "ASISTENCIA_VIAL",
+  "subtipo": "ACCIDENTE_TRANSITO",
+  "mensaje": "Accidente de tránsito",
+  "fraseCodigo": "FRASE_ACCIDENTE_TRANSITO",
+  "modoCamuflaje": false,
+  "requiereInterprete": false,
+  "canal": "INTERNET",
+  "latitud": -36.82010,
+  "longitud": -73.04450,
+  "precisionMetros": 8
+}
+
+### 12) Crear alerta azul con detalle antes de enviar
+POST {{baseUrl}}/api/emergencias
+Content-Type: application/json
+
+{
+  "usuarioId": 1,
+  "tipo": "SOSPECHA_PREVENCION",
+  "subtipo": "VEHICULO_SOSPECHOSO",
+  "mensaje": "Vehículo sospechoso",
+  "fraseCodigo": "FRASE_VEHICULO_SOSPECHOSO",
+  "modoCamuflaje": false,
+  "requiereInterprete": false,
+  "canal": "INTERNET",
+  "latitud": -36.82100,
+  "longitud": -73.04500,
+  "precisionMetros": 9
+}
+
+### 13) Modo camuflaje: configuración del puzzle
+GET {{baseUrl}}/api/camuflaje/configuracion
+
+### 14) Modo camuflaje: responder preguntas y enviar alerta a CENCO
+POST {{baseUrl}}/api/camuflaje/emergencias
+Content-Type: application/json
+
+{
+  "usuarioId": 1,
+  "latitud": -36.82800,
+  "longitud": -73.05100,
+  "precisionMetros": 12,
+  "respuestas": [
+    { "codigoPregunta": "AGRESOR_CERCA", "respuesta": true },
+    { "codigoPregunta": "HAY_ARMA", "respuesta": false },
+    { "codigoPregunta": "NECESITA_AYUDA_INMEDIATA", "respuesta": true }
+  ]
+}
+
+### 15) Modo camuflaje: mientras CENCO no confirma muestra Calculando puntaje
+GET {{baseUrl}}/api/camuflaje/emergencias/{{camuflajeId}}/resultado
+
+### 16) CENCO confirma alerta camuflada; la app ya puede mostrar puntaje
+PATCH {{baseUrl}}/api/central/emergencias/{{camuflajeId}}/estado
+Content-Type: application/json
+
+{
+  "estado": "RECIBIDA"
+}
+
+### 17) Modo camuflaje: resultado con puntaje
+GET {{baseUrl}}/api/camuflaje/emergencias/{{camuflajeId}}/resultado
+
+### 18) CENCO: contexto camuflaje / respuestas ocultas
+GET {{baseUrl}}/api/central/emergencias/{{camuflajeId}}/contexto
+
+### 19) Solicitar intérprete
+POST {{baseUrl}}/api/emergencias/{{emergenciaId}}/interprete/solicitar
+Content-Type: application/json
+
+{}
+
+### 20) CENCO: asignar intérprete
+PATCH {{baseUrl}}/api/central/emergencias/{{emergenciaId}}/interprete/asignar
+Content-Type: application/json
+
+{
+  "nombreInterprete": "Intérprete Demo LSCh",
+  "urlSalaVideo": "https://demo.local/sala/interprete-1"
+}
+
+### 21) Configuración SMS
+GET {{baseUrl}}/api/sms/configuracion
+
+### 22) Preparar SMS de contingencia
+POST {{baseUrl}}/api/sms/preparar
+Content-Type: application/json
+
+{
+  "usuarioId": 1,
+  "tipo": "DELITOS_GRAVES",
+  "subtipo": "ALERTA_SILENCIOSA",
+  "latitud": -36.82699,
+  "longitud": -73.04977,
+  "precisionMetros": 5,
+  "mensajeCorto": "ALERTA SILENCIOSA",
+  "modoCamuflaje": false
+}
+
+### 23) Stream CENCO en vivo
+GET {{baseUrl}}/api/central/stream

@@ -1,0 +1,18 @@
+<ion-content [fullscreen]="true">
+  <main class="page-shell inicio-shell">
+    <section class="brand-block">
+      <div class="shield-circle">♢</div>
+      <h1>Mediación Directa</h1>
+      <p>Plataforma de asistencia digital</p>
+    </section>
+
+    <section class="actions-block">
+      <button class="primary-btn" type="button" (click)="ingresarPin()">Ingresar con PIN</button>
+      <button class="link-btn" type="button" (click)="claveUnica()" [disabled]="cargandoClaveUnica">
+        ¿Nuevo usuario? Ingresa con Clave Única
+      </button>
+    </section>
+
+    <button class="ghost-btn" type="button" aria-label="Modo camuflaje" (click)="camuflaje()">👻</button>
+  </main>
+</ion-content>

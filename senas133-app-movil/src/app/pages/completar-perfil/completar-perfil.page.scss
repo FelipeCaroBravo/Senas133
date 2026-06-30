@@ -1,0 +1,131 @@
+.success-box {
+  background: #ecfff5;
+  border: 1px solid #c5f1d6;
+  border-radius: 14px;
+  padding: 18px;
+  color: #06743e;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  font-size: 15px;
+  line-height: 1.35;
+  margin-bottom: 30px;
+
+  span {
+    border: 2px solid #05bd70;
+    color: #05bd70;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    font-weight: 900;
+    font-size: 13px;
+  }
+}
+
+.divider {
+  height: 1px;
+  background: #e7ebf0;
+  margin: 34px 0 18px;
+}
+
+h2 {
+  text-align: center;
+  color: var(--app-ink);
+  font-size: 15px;
+  font-weight: 900;
+  margin: 0;
+}
+
+.pin-box {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.pin-input {
+  width: 150px;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 8px;
+  color: #0f172a;
+
+  --background: transparent;
+  --border-width: 0;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --padding-top: 4px;
+  --padding-bottom: 4px;
+  --highlight-color-focused: transparent;
+  --highlight-color-valid: transparent;
+  --highlight-color-invalid: transparent;
+}
+
+.pin-input::part(native) {
+  text-align: center;
+}
+
+.pin-lines {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 14px;
+
+  span {
+    width: 36px;
+    height: 4px;
+    border-radius: 99px;
+    background: #cfd5df;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+
+  span.active {
+    background: #2463ff;
+    transform: scaleX(1.08);
+  }
+}
+
+.mini-keypad {
+  display: none;
+}
+
+.bottom-action {
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  bottom: 26px;
+}
+
+ion-button {
+  --border-radius: 12px;
+  --background: #2463ff;
+  --background-activated: #174ee0;
+  --box-shadow: 0 10px 22px rgba(36, 99, 255, 0.28);
+  height: 56px;
+  font-weight: 800;
+  font-size: 16px;
+  text-transform: none;
+}
+
+ion-input {
+  --color: #0f172a;
+  --placeholder-color: #8a96aa;
+  --placeholder-opacity: 1;
+}
+
+@media (max-height: 760px) {
+  .divider {
+    margin: 24px 0 14px;
+  }
+
+  .pin-box {
+    margin-top: 18px;
+  }
+
+  .bottom-action {
+    bottom: 18px;
+  }
+}
