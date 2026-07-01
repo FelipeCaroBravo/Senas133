@@ -30,7 +30,7 @@ Java 17+
 Spring Boot
 Spring Data JPA
 MySQL
-Maven
+Maven Wrapper / Maven
 Docker
 ```
 
@@ -61,11 +61,23 @@ MySQL 8
 
 ## 3. Programas necesarios
 
+### Para ejecutar con Docker
+
+Para la forma más simple de ejecución se necesita:
+
+```text
+Docker Desktop
+Docker Compose
+```
+
+Con Docker no es necesario instalar manualmente Maven ni MySQL, porque los contenedores se encargan de levantar esos servicios.
+
+### Para ejecutar sin Docker
+
 Para ejecutar el proyecto sin Docker se necesita instalar:
 
 ```text
 Java JDK 17 o superior
-Maven
 Node.js 20 o superior
 npm
 Ionic CLI
@@ -79,14 +91,33 @@ Instalar Ionic CLI:
 npm install -g @ionic/cli
 ```
 
-Para ejecutar con Docker se necesita:
+El backend puede ejecutarse con **Maven Wrapper**, por lo que no es obligatorio tener Maven instalado globalmente si el repositorio incluye estos archivos:
 
 ```text
-Docker Desktop
-Docker Compose
+mvnw
+mvnw.cmd
+.mvn/
 ```
 
-Opcional para generar APK:
+En Windows se usa:
+
+```cmd
+.\mvnw.cmd spring-boot:run
+```
+
+En Linux/macOS se usa:
+
+```bash
+./mvnw spring-boot:run
+```
+
+Si el proyecto todavía no tiene Maven Wrapper, se debe instalar Maven una vez y generarlo con:
+
+```cmd
+mvn -N wrapper:wrapper
+```
+
+### Opcional para generar APK
 
 ```text
 Android Studio
@@ -206,28 +237,46 @@ senas_pass
 
 ### 5.3. Ejecutar backend
 
-Desde la carpeta:
+Desde la carpeta del backend:
 
 ```bash
 cd senas133-backend-mysql
 ```
 
-Ejecutar:
+#### En Windows
+
+```cmd
+.\mvnw.cmd spring-boot:run
+```
+
+#### En Linux/macOS
+
+```bash
+./mvnw spring-boot:run
+```
+
+#### Alternativa con Maven instalado globalmente
 
 ```bash
 mvn spring-boot:run
-```
-
-Si Maven no está instalado pero existe `mvnw.cmd`, usar:
-
-```bash
-.\mvnw.cmd spring-boot:run
 ```
 
 El backend queda disponible en:
 
 ```text
 http://localhost:8080
+```
+
+Si aparece el mensaje `mvn no se reconoce como un comando interno o externo`, significa que Maven no está instalado o no está agregado al PATH. En ese caso, usar Maven Wrapper:
+
+```cmd
+.\mvnw.cmd spring-boot:run
+```
+
+Si el proyecto aún no tiene `mvnw.cmd`, instalar Maven y generar el wrapper con:
+
+```cmd
+mvn -N wrapper:wrapper
 ```
 
 ### 5.4. Ejecutar app móvil
@@ -274,7 +323,34 @@ Abrir:
 http://localhost:4200
 ```
 
-## 6. Rutas principales para probar
+## 6. Maven Wrapper
+
+El Maven Wrapper permite ejecutar el backend sin depender de una instalación global de Maven.
+
+Para generarlo por primera vez, desde la carpeta del backend:
+
+```cmd
+cd senas133-backend-mysql
+mvn -N wrapper:wrapper
+```
+
+Esto genera:
+
+```text
+mvnw
+mvnw.cmd
+.mvn/
+```
+
+Estos archivos deben mantenerse en el repositorio para facilitar la ejecución del proyecto por otras personas.
+
+Después de generarlo, el backend se puede ejecutar con:
+
+```cmd
+.\mvnw.cmd spring-boot:run
+```
+
+## 7. Rutas principales para probar
 
 ### Backend
 
@@ -304,7 +380,7 @@ http://localhost:8100
 http://localhost:4200
 ```
 
-## 7. Flujo básico de prueba
+## 8. Flujo básico de prueba
 
 1. Abrir la app móvil:
 
@@ -341,7 +417,7 @@ CERRADA
 
 10. Volver a la app móvil y verificar que cambie el estado.
 
-## 8. Flujo del modo camuflaje
+## 9. Flujo del modo camuflaje
 
 El modo camuflaje funciona así:
 
@@ -364,9 +440,9 @@ POST /api/camuflaje/emergencias
 GET  /api/camuflaje/emergencias/{id}/resultado
 ```
 
-## 9. Partes del código que se deben cambiar para pruebas
+## 10. Partes del código que se deben cambiar para pruebas
 
-## 9.1. Cambiar IP del backend para probar desde celular
+### 10.1. Cambiar IP del backend para probar desde celular
 
 Si todo se prueba desde el mismo computador, usar:
 
@@ -407,7 +483,8 @@ Para localhost:
 ```ts
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080/api'
+  apiUrl: 'http://localhost:8080/api',
+  pollingMs: 3000
 };
 ```
 
@@ -416,7 +493,8 @@ Para teléfono real:
 ```ts
 export const environment = {
   production: false,
-  apiUrl: 'http://192.168.1.45:8080/api'
+  apiUrl: 'http://192.168.1.45:8080/api',
+  pollingMs: 3000
 };
 ```
 
@@ -427,6 +505,8 @@ senas133-app-movil/src/environments/environment.prod.ts
 ```
 
 si se hará build o APK.
+
+Importante: si `angular.json` no tiene configurado `fileReplacements`, el build puede seguir usando `environment.ts`. En ese caso, para pruebas de APK se recomienda cambiar también `environment.ts`.
 
 ### CENCO simulado
 
@@ -441,7 +521,8 @@ Para localhost:
 ```ts
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080/api'
+  apiUrl: 'http://localhost:8080/api',
+  pollingMs: 3000
 };
 ```
 
@@ -450,11 +531,56 @@ Para red local:
 ```ts
 export const environment = {
   production: false,
-  apiUrl: 'http://192.168.1.45:8080/api'
+  apiUrl: 'http://192.168.1.45:8080/api',
+  pollingMs: 3000
 };
 ```
 
-## 9.2. Cambiar CORS en el backend
+### 10.2. Usar ngrok o cloudflared
+
+Si se quiere probar la APK desde otra red o usando datos móviles, se puede exponer el backend local con una URL pública temporal.
+
+Con cloudflared:
+
+```bash
+cloudflared tunnel --url http://localhost:8080
+```
+
+Ejemplo de URL generada:
+
+```text
+https://ejemplo.trycloudflare.com
+```
+
+Con ngrok:
+
+```bash
+ngrok http 8080
+```
+
+Ejemplo de URL generada:
+
+```text
+https://ejemplo.ngrok-free.app
+```
+
+Luego cambiar en la app móvil:
+
+```ts
+export const environment = {
+  production: false,
+  apiUrl: 'https://ejemplo.trycloudflare.com/api',
+  pollingMs: 3000
+};
+```
+
+Para APK, revisar también:
+
+```text
+senas133-app-movil/src/environments/environment.prod.ts
+```
+
+### 10.3. Cambiar CORS en el backend
 
 Archivo:
 
@@ -474,6 +600,18 @@ Para probar desde celular con IP local:
 app.cors.allowed-origins=http://localhost:4200,http://localhost:8100,http://192.168.1.45:4200,http://192.168.1.45:8100
 ```
 
+Para pruebas con APK/Capacitor, agregar también:
+
+```properties
+capacitor://localhost,ionic://localhost,http://localhost,https://localhost
+```
+
+Ejemplo recomendado:
+
+```properties
+app.cors.allowed-origins=${CORS_ALLOWED_ORIGINS:http://localhost:4200,http://localhost:5173,http://localhost:3000,http://localhost:8100,http://127.0.0.1:4200,http://127.0.0.1:8100,capacitor://localhost,ionic://localhost,http://localhost,https://localhost}
+```
+
 El backend debe tener:
 
 ```properties
@@ -481,7 +619,7 @@ server.address=0.0.0.0
 server.port=8080
 ```
 
-## 9.3. Cambiar número que recibe SMS
+### 10.4. Cambiar número que recibe SMS
 
 Archivo:
 
@@ -520,7 +658,7 @@ Cambiar por:
 SMS_CENTER_PHONE: +56912345678
 ```
 
-## 9.4. Configuración de base de datos
+### 10.5. Configuración de base de datos
 
 Archivo:
 
@@ -550,44 +688,3 @@ DB_URL: jdbc:mysql://mysql:3306/mediacion_directa?useSSL=false&allowPublicKeyRet
 DB_USERNAME: senas_user
 DB_PASSWORD: senas_pass
 ```
-
-## 10. Generar APK Android
-
-Desde la carpeta del frontend móvil:
-
-```bash
-cd senas133-app-movil
-ionic build
-npx cap add android
-npx cap sync android
-npx cap open android
-```
-
-Luego Android Studio permite ejecutar o generar la APK.
-
-Antes de generar la APK, revisar:
-
-```text
-src/environments/environment.prod.ts
-```
-
-Si se probará desde un teléfono real, debe apuntar a la IP del computador o a una URL pública.
-
-Ejemplo:
-
-```ts
-export const environment = {
-  production: true,
-  apiUrl: 'http://192.168.1.45:8080/api'
-};
-```
-
-## 11. Datos de prueba
-
-Los datos de prueba se cargan desde:
-
-```text
-senas133-backend-mysql/Scripts/schema-data.sql
-```
-
-El PIN de prueba puede variar según el script. Revisar el archivo `schema-data.sql` para confirmar usuarios disponibles.
