@@ -1,30 +1,105 @@
 <ion-content [fullscreen]="true">
-  <main class="page-shell game-shell">
+  <main class="page-shell camuflaje-shell">
     <header class="game-header">
-      <button class="back-btn" type="button" (click)="volver()">‹</button>
-      <strong>SCORE: 14,320</strong>
-      <span>▭</span>
+      <button class="game-icon-btn" type="button" (click)="volver()">
+        ‹
+      </button>
+
+      <div class="score">
+        SCORE: 14,320
+      </div>
+
+      <button class="game-icon-btn" type="button" aria-label="Ayuda visual">
+        🎥
+      </button>
     </header>
 
-    <section class="board" (dragover)="permitirSoltar($event)" (drop)="colocarPieza()" (click)="colocarPieza()">
-      <div class="cell" *ngFor="let c of [].constructor(36); let i = index" [class.purple]="i === 12 || i === 13 || i === 18 || i === 19 || i === 24 || i === 25 || i === 30 || i === 31" [class.blue]="i === 4 || i === 5 || i === 9 || i === 10 || i === 11 || i === 15 || i === 16 || i === 20 || i === 21 || i === 26"></div>
-    </section>
+    <section
+      class="board-area"
+      (dragover)="permitirSoltar($event)"
+      (drop)="colocarPieza()">
 
-    <section class="piece" draggable="true" (dragend)="colocarPieza()" *ngIf="!piezaColocada">
-      <span></span><span></span><span></span><span></span>
-      <small>Drag piece to board</small>
-    </section>
+      <div class="game-board">
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell purple"></div>
+        <div class="cell purple"></div>
+        <div class="cell"></div>
 
-    <section class="hidden-question" *ngIf="piezaColocada && !enviando">
-      <p>{{ preguntas[indice]?.textoCamuflado }}</p>
-      <div>
-        <button type="button" (click)="responder(false)">No</button>
-        <button type="button" (click)="responder(true)">Sí</button>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell purple"></div>
+        <div class="cell purple"></div>
+        <div class="cell purple"></div>
+        <div class="cell"></div>
+
+        <div class="cell magenta"></div>
+        <div class="cell magenta"></div>
+        <div class="cell purple"></div>
+        <div class="cell purple"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+
+        <div class="cell magenta"></div>
+        <div class="cell magenta"></div>
+        <div class="cell purple"></div>
+        <div class="cell purple"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+
+        <div class="cell magenta"></div>
+        <div class="cell magenta"></div>
+        <div class="cell purple"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+
+        <div class="cell magenta"></div>
+        <div class="cell magenta"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
       </div>
     </section>
 
-    <section class="hidden-question" *ngIf="enviando">
-      <p>Guardando progreso...</p>
+    <section class="piece-area" *ngIf="!piezaColocada">
+      <div
+        class="puzzle-piece"
+        draggable="true">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <p>Drag piece to board</p>
+    </section>
+
+    <section class="question-strip" *ngIf="piezaColocada && preguntas[indice] as pregunta">
+      <p>{{ pregunta.textoCamuflado }}</p>
+
+      <div class="question-actions">
+        <button
+          type="button"
+          (click)="responder(true)"
+          [disabled]="enviando">
+          SÍ
+        </button>
+
+        <button
+          type="button"
+          (click)="responder(false)"
+          [disabled]="enviando">
+          NO
+        </button>
+      </div>
+    </section>
+
+    <section class="sending-panel" *ngIf="enviando">
+      <div class="loader">⏳</div>
+      <p>Calculando puntaje...</p>
     </section>
   </main>
 </ion-content>

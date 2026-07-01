@@ -1,53 +1,108 @@
 .pregunta-shell {
   min-height: 100%;
-  background: #63070b;
-  padding: 34px 26px;
+  background: #7a0008;
+  color: white;
+  position: relative;
+  padding: 42px 30px;
   display: flex;
   flex-direction: column;
 }
 
 .pregunta-back {
-  color: #fff;
-  width: 36px;
+  color: white;
+  font-size: 32px;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  background: transparent;
+  font-weight: 800;
+  margin-bottom: 18px;
 }
 
-.status-top {
-  margin-top: 22px;
-  background: #09be78;
-  color: white;
-  border-radius: 12px;
-  min-height: 60px;
-  padding: 0 18px;
+.waiting-card {
+  width: 100%;
+  max-width: 324px;
+  margin: 0 auto;
+  border-radius: 10px;
+  padding: 14px 18px;
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 16px;
+  color: white;
+  transition: background 0.25s ease, transform 0.25s ease;
 
-  &.waiting { background: #8f1c1f; }
-
-  span {
-    width: 24px;
-    height: 24px;
-    border: 2px solid #fff;
+  .waiting-icon {
+    width: 28px;
+    height: 28px;
+    border: 2px solid white;
     border-radius: 50%;
     display: grid;
     place-items: center;
-    font-weight: 1000;
+    font-size: 15px;
+    flex: 0 0 auto;
+  }
+
+  strong {
+    color: white;
+    font-size: 16px;
+    line-height: 1.25;
+    font-weight: 900;
   }
 }
 
-.question-card {
-  margin: auto 6px;
-  background: #fff;
-  border-radius: 22px;
-  padding: 38px 32px 32px;
+.waiting-card.esperando {
+  background: rgba(255, 255, 255, 0.13);
+}
+
+.waiting-card.recibida {
+  background: rgba(0, 190, 120, 0.75);
+}
+
+.waiting-card.atencion {
+  background: rgba(36, 99, 255, 0.85);
+}
+
+.waiting-card.patrulla {
+  background: rgba(255, 183, 0, 0.88);
+  color: #111827;
+
+  strong {
+    color: #111827;
+  }
+
+  .waiting-icon {
+    border-color: #111827;
+  }
+}
+
+.waiting-card.interprete {
+  background: rgba(111, 66, 193, 0.88);
+}
+
+.waiting-card.cerrada {
+  background: rgba(0, 150, 90, 0.85);
+}
+
+.waiting-card.cancelada {
+  background: rgba(80, 80, 80, 0.85);
+}
+
+.question-box {
+  background: white;
+  color: #0f172a;
+  border-radius: 20px;
+  padding: 38px 30px 32px;
+  width: 100%;
+  max-width: 312px;
+  margin: auto auto;
   text-align: center;
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.18);
 
   h1 {
-    margin: 0 0 32px;
-    color: var(--app-ink);
+    margin: 0 0 30px;
+    color: #0f172a;
     font-size: 25px;
-    line-height: 1.35;
+    line-height: 1.28;
     font-weight: 1000;
   }
 }
@@ -56,4 +111,42 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
+
+  button {
+    height: 60px;
+    border: 0;
+    border-radius: 11px;
+    font-size: 17px;
+    font-weight: 1000;
+  }
+}
+
+.secondary-btn {
+  background: #e7ebf2;
+  color: #0f172a;
+}
+
+.primary-btn {
+  background: #2d63f6;
+  color: white;
+  box-shadow: 0 12px 22px rgba(45, 99, 246, 0.28);
+}
+
+@media (max-height: 760px) {
+  .pregunta-shell {
+    padding-top: 34px;
+  }
+
+  .question-box {
+    padding: 30px 26px 28px;
+  }
+
+  .question-box h1 {
+    font-size: 23px;
+    margin-bottom: 24px;
+  }
+
+  .question-actions button {
+    height: 56px;
+  }
 }

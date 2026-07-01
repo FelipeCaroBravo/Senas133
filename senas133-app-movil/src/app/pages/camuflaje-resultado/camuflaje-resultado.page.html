@@ -3,18 +3,25 @@
     <header class="game-header">
       <button class="back-btn" type="button" (click)="siguiente()">‹</button>
       <strong>SCORE: {{ resultado?.puntaje || '14,320' }}</strong>
-      <span>▭</span>
+      <span aria-label="Resultado del juego">🏆</span>
     </header>
 
     <section class="board blurred">
-      <div class="cell" *ngFor="let c of [].constructor(36); let i = index" [class.purple]="i === 12 || i === 13 || i === 18 || i === 19 || i === 24 || i === 25 || i === 30 || i === 31" [class.blue]="i === 4 || i === 5 || i === 9 || i === 10 || i === 11 || i === 15 || i === 16 || i === 20 || i === 21 || i === 26"></div>
+      <div
+        class="cell"
+        *ngFor="let c of [].constructor(36); let i = index"
+        [class.purple]="i === 12 || i === 13 || i === 18 || i === 19 || i === 24 || i === 25 || i === 30 || i === 31"
+        [class.blue]="i === 4 || i === 5 || i === 9 || i === 10 || i === 11 || i === 15 || i === 16 || i === 20 || i === 21 || i === 26">
+      </div>
     </section>
 
     <section class="result-modal" *ngIf="confirmado; else loading">
       <h1>¡Nivel<br>Completado!</h1>
-      <div class="stars">★ ★ ★</div>
+      <div class="stars">⭐ ⭐ ⭐</div>
       <p>Nuevo récord establecido</p>
-      <button class="primary-btn purple-btn" type="button" (click)="siguiente()">Siguiente Nivel</button>
+      <button class="primary-btn purple-btn" type="button" (click)="siguiente()">
+        Siguiente Nivel
+      </button>
     </section>
 
     <ng-template #loading>

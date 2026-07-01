@@ -1,20 +1,20 @@
 <ion-content [fullscreen]="true">
   <main class="page-shell call-shell">
     <header class="call-header">
-      <button class="dots" type="button">⋮</button>
+      <button class="dots" type="button" aria-label="Más opciones">⋮</button>
       <strong>LLAMADA SEGURA</strong>
     </header>
 
     <section class="call-center">
-      <div class="video-circle">▭</div>
+      <div class="video-circle" aria-label="Videollamada">🎥</div>
       <h1>Central de Intérpretes</h1>
       <p>{{ estadoTexto }}</p>
     </section>
 
     <section class="call-controls">
-      <button type="button">⌁</button>
-      <button class="hang" type="button" (click)="colgar()">⌕</button>
-      <button type="button">▭</button>
+      <button type="button" aria-label="Micrófono">🎙️</button>
+      <button class="hang" type="button" (click)="colgar()" aria-label="Colgar">📞</button>
+      <button type="button" aria-label="Video">📹</button>
     </section>
   </main>
 </ion-content>

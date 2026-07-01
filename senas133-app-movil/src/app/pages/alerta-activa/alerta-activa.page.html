@@ -8,36 +8,72 @@
       <p>{{ subtitulo }}</p>
     </section>
 
-    <section class="status-card">
-      <div class="status-row">
-        <span class="ok">✓</span>
-        <div>
-          <strong>Central Notificada</strong>
-          <small>{{ centralNotificada ? 'Tu reporte ha sido recibido y está en proceso.' : 'Tu reporte fue enviado. Esperando confirmación.' }}</small>
-        </div>
-      </div>
-
-      <div class="status-row" *ngIf="emergencia?.tipo === 'DELITOS_GRAVES'; else patrullaRow">
-        <span class="gps">⌖</span>
-        <div>
-          <strong>Ubicación compartida</strong>
-          <small>Precisión: {{ emergencia?.precisionMetros || 5 }} metros</small>
-        </div>
-      </div>
-
-      <ng-template #patrullaRow>
+    <ng-container *ngIf="emergencia as e; else cargando">
+      <section class="status-card">
         <div class="status-row">
-          <span class="shield">♢</span>
+          <span class="ok">✅</span>
+
           <div>
-            <strong>Carabinero en camino</strong>
-            <small>{{ patrulla ? 'Unidad despachada hacia tu ubicación.' : 'Esperando despacho de unidad.' }}</small>
+            <strong>Central Notificada</strong>
+            <small>
+              {{
+                centralNotificada
+                  ? 'Tu reporte ha sido recibido y está en proceso.'
+                  : 'Tu reporte fue enviado. Esperando confirmación.'
+              }}
+            </small>
           </div>
         </div>
-      </ng-template>
-    </section>
+
+        <div
+          class="status-row"
+          *ngIf="e.tipo === 'DELITOS_GRAVES'; else patrullaRow">
+
+          <span class="gps" aria-label="Ubicación compartida">📍</span>
+
+          <div>
+            <strong>Ubicación compartida</strong>
+            <small>
+              Precisión: {{ e.precisionMetros || 5 }} metros
+            </small>
+          </div>
+        </div>
+
+        <ng-template #patrullaRow>
+          <div class="status-row">
+            <span class="shield" aria-label="Carabinero en camino">🚓</span>
+
+            <div>
+              <strong>Carabinero en camino</strong>
+              <small>
+                {{
+                  patrulla
+                    ? 'Unidad despachada hacia tu ubicación.'
+                    : 'Esperando despacho de unidad.'
+                }}
+              </small>
+            </div>
+          </div>
+        </ng-template>
+      </section>
+    </ng-container>
+
+    <ng-template #cargando>
+      <section class="status-card">
+        <div class="status-row">
+          <span class="ok">⏳</span>
+
+          <div>
+            <strong>Cargando alerta</strong>
+            <small>Obteniendo información desde la central.</small>
+          </div>
+        </div>
+      </section>
+    </ng-template>
 
     <button class="interpreter-btn" type="button" (click)="conectarInterprete()">
-      <span>▭</span>
+      <span>🎥</span>
+
       <div>
         <strong>Conectar con Intérprete</strong>
         <small>Videollamada segura</small>

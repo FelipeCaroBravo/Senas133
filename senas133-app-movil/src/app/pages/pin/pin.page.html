@@ -1,25 +1,68 @@
 <ion-content [fullscreen]="true">
   <main class="page-shell pin-shell">
-    <button class="back-btn pin-back" type="button" (click)="volver()">‹</button>
+    <header class="header-simple">
+      <button class="back-btn" type="button" (click)="volver()">‹</button>
+      <h1>Acceso con PIN</h1>
+
+      <div class="header-actions">
+        <button class="icon-btn" type="button" aria-label="Ayuda">
+          ?
+        </button>
+      </div>
+    </header>
 
     <section class="pin-content">
-      <h1>Ingresa tu PIN</h1>
+      <div class="avatar" aria-label="Acceso seguro">🔐</div>
 
-      <div class="pin-dots">
+      <h2>Ingresa tu PIN</h2>
+
+      <div class="pin-dots" aria-label="PIN ingresado">
         <span [class.active]="pin.length > 0"></span>
         <span [class.active]="pin.length > 1"></span>
         <span [class.active]="pin.length > 2"></span>
         <span [class.active]="pin.length > 3"></span>
       </div>
 
-      <div class="keypad">
-        <button *ngFor="let n of numeros" type="button" (click)="add(n)">{{ n }}</button>
-        <span></span>
-        <button type="button" (click)="add('0')">0</button>
-        <button class="delete" type="button" (click)="borrar()">⌫</button>
-      </div>
-    </section>
+      <section class="keypad">
+        <button
+          *ngFor="let numero of numeros"
+          type="button"
+          (click)="add(numero)"
+          [disabled]="validando">
+          {{ numero }}
+        </button>
 
-    <button class="recover" type="button" (click)="recuperar()">¿Olvidaste tu PIN? Recuperar con Clave Única</button>
+        <button
+          class="keypad-action"
+          type="button"
+          (click)="recuperar()"
+          [disabled]="validando">
+          PIN
+        </button>
+
+        <button
+          type="button"
+          (click)="add('0')"
+          [disabled]="validando">
+          0
+        </button>
+
+        <button
+          class="keypad-action"
+          type="button"
+          (click)="borrar()"
+          [disabled]="validando">
+          ⌫
+        </button>
+      </section>
+
+      <button
+        class="recover-btn"
+        type="button"
+        (click)="recuperar()"
+        [disabled]="validando">
+        Recuperar o cambiar PIN
+      </button>
+    </section>
   </main>
 </ion-content>

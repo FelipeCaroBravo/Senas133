@@ -1,56 +1,132 @@
 .pin-shell {
   min-height: 100%;
-  background: #fff;
-  position: relative;
-}
-
-.pin-back {
-  position: absolute;
-  top: 24px;
-  left: 28px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
 }
 
 .pin-content {
-  padding: 118px 54px 0;
-  text-align: center;
+  flex: 1;
+  padding: 26px 28px 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  h1 {
-    color: var(--app-ink);
-    font-size: 26px;
-    font-weight: 900;
-    margin-bottom: 22px;
+.avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: #eef4ff;
+  display: grid;
+  place-items: center;
+  font-size: 54px;
+  margin: 0 auto 28px;
+}
+
+.pin-content h2 {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  color: #0f172a;
+  font-size: 25px;
+  font-weight: 900;
+}
+
+.pin-dots {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin: 22px 0 42px;
+
+  span {
+    width: 15px;
+    height: 15px;
+    border: 2px solid #c7cfdd;
+    border-radius: 50%;
+    background: transparent;
+    transition: all 0.2s ease;
+  }
+
+  span.active {
+    background: #2463ff;
+    border-color: #2463ff;
+    transform: scale(1.08);
   }
 }
 
 .keypad {
+  width: 100%;
+  max-width: 310px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 44px 52px;
-  margin-top: 30px;
+  gap: 18px;
+  margin-top: 4px;
 
   button {
+    width: 82px;
+    height: 64px;
     border: 0;
-    background: transparent;
-    color: var(--app-ink);
-    font-size: 30px;
-    font-weight: 500;
-    padding: 10px;
+    border-radius: 18px;
+    background: #f4f7fb;
+    color: #0f172a;
+    font-size: 28px;
+    font-weight: 900;
+    box-shadow: 0 6px 12px rgba(15, 23, 42, 0.08);
+    justify-self: center;
+    transition: transform 0.12s ease, background 0.12s ease;
+
+    &:active {
+      transform: scale(0.95);
+      background: #e8eef8;
+    }
+
+    &:disabled {
+      opacity: 0.45;
+    }
   }
 
-  .delete {
-    color: #526174;
-    font-size: 28px;
+  .keypad-action {
+    font-size: 15px;
+    font-weight: 800;
+    color: #2463ff;
   }
 }
 
-.recover {
+.recover-btn {
+  margin-top: 28px;
   border: 0;
   background: transparent;
-  position: absolute;
-  bottom: 36px;
-  width: 100%;
-  left: 0;
-  color: #536176;
-  font-size: 14px;
-  font-weight: 800;
+  color: #2463ff;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.recover-btn:disabled {
+  opacity: 0.45;
+}
+
+@media (max-height: 760px) {
+  .avatar {
+    width: 82px;
+    height: 82px;
+    font-size: 46px;
+    margin-bottom: 20px;
+  }
+
+  .pin-dots {
+    margin: 18px 0 28px;
+  }
+
+  .keypad {
+    gap: 12px;
+
+    button {
+      height: 56px;
+    }
+  }
+
+  .recover-btn {
+    margin-top: 18px;
+  }
 }

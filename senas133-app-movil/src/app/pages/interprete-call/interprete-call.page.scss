@@ -21,7 +21,7 @@
     height: 45px;
     border-radius: 50%;
     border: 0;
-    background: rgba(255,255,255,.12);
+    background: rgba(255, 255, 255, 0.12);
     color: #c9d4e5;
     font-size: 28px;
   }
@@ -45,8 +45,10 @@
     height: 122px;
     border-radius: 50%;
     background: #5737ff;
-    border: 5px solid rgba(255,255,255,.16);
-    box-shadow: 0 0 0 10px rgba(87, 55, 255, .18), 0 0 30px rgba(87,55,255,.75);
+    border: 5px solid rgba(255, 255, 255, 0.16);
+    box-shadow:
+      0 0 0 10px rgba(87, 55, 255, 0.18),
+      0 0 30px rgba(87, 55, 255, 0.75);
     display: grid;
     place-items: center;
     font-size: 52px;
@@ -83,7 +85,9 @@
     border-radius: 50%;
     background: #344255;
     color: #d6e0f2;
-    font-size: 26px;
+    font-size: 25px;
+    display: grid;
+    place-items: center;
   }
 
   .hang {
@@ -91,6 +95,7 @@
     height: 72px;
     background: #ff3044;
     color: #fff;
-    box-shadow: 0 8px 20px rgba(255,48,68,.32);
+    box-shadow: 0 8px 20px rgba(255, 48, 68, 0.32);
+    transform: rotate(135deg);
   }
 }
