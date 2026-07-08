@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import {
   IonContent,
@@ -14,7 +15,8 @@ import { StorageService } from '../../core/services/storage.service';
   selector: 'app-perfil',
   imports: [
     IonContent,
-    FormsModule
+    FormsModule,
+    CommonModule
   ],
   templateUrl: './perfil.page.html',
   styleUrl: './perfil.page.scss'
@@ -24,6 +26,7 @@ export class PerfilPage {
   direccionPrincipal = '';
   telefono = '';
   guardando = false;
+  ayudaAbierta = false;
 
   constructor(
     private readonly router: Router,

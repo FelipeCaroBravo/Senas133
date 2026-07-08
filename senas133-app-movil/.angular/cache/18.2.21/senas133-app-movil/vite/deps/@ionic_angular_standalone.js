@@ -1,6 +1,16 @@
 import {
+  a,
+  c as c3,
+  o as o3
+} from "./chunk-UUEWCF46.js";
+import {
   o as o4
 } from "./chunk-MJA5TOG2.js";
+import {
+  h,
+  i as i3,
+  s as s4
+} from "./chunk-6A7AEZPH.js";
 import {
   t as t5
 } from "./chunk-YFMKIZLE.js";
@@ -24,11 +34,22 @@ import {
   e as e4
 } from "./chunk-7KY32AE7.js";
 import {
+  ActivatedRoute,
+  ChildrenOutletContexts,
+  NavigationCancel,
+  NavigationError,
+  NavigationStart,
+  PRIMARY_OUTLET,
+  Router,
+  RouterLink,
+  UrlSerializer
+} from "./chunk-WIMO32YN.js";
+import {
   l as l2
-} from "./chunk-XGFATD7R.js";
+} from "./chunk-3WE56G5A.js";
 import {
   i as i2
-} from "./chunk-4HCSGKCM.js";
+} from "./chunk-XECCSLN3.js";
 import {
   A,
   D,
@@ -41,7 +62,11 @@ import {
   s as s3,
   t as t2,
   v as v2
-} from "./chunk-5CPEFQYL.js";
+} from "./chunk-5G3A3PTU.js";
+import {
+  d,
+  o as o2
+} from "./chunk-JRRVO33B.js";
 import {
   T,
   _,
@@ -62,20 +87,6 @@ import {
   x,
   y
 } from "./chunk-EFC5T3F5.js";
-import {
-  h,
-  i as i3,
-  s as s4
-} from "./chunk-6A7AEZPH.js";
-import {
-  a,
-  c as c3,
-  o as o3
-} from "./chunk-UUEWCF46.js";
-import {
-  d,
-  o as o2
-} from "./chunk-JRRVO33B.js";
 import {
   An,
   Ct,
@@ -101,17 +112,6 @@ import {
   NG_VALUE_ACCESSOR,
   NgControl
 } from "./chunk-OLPR4FLH.js";
-import {
-  ActivatedRoute,
-  ChildrenOutletContexts,
-  NavigationCancel,
-  NavigationError,
-  NavigationStart,
-  PRIMARY_OUTLET,
-  Router,
-  RouterLink,
-  UrlSerializer
-} from "./chunk-WIMO32YN.js";
 import "./chunk-NCXN24N4.js";
 import "./chunk-7V3C4DXQ.js";
 import {
@@ -4101,7 +4101,7 @@ var b5 = Vn(class extends I {
       const t16 = () => {
         this.gestureOrAnimationInProgress = true, this.swipeHandler && this.swipeHandler.onStart();
       };
-      this.gesture = (yield import("./p-Sh0ICmPV-GSCFMHC7.js")).createSwipeBackGesture(this.el, () => !this.gestureOrAnimationInProgress && !!this.swipeHandler && this.swipeHandler.canStart(), () => t16(), (t17) => {
+      this.gesture = (yield import("./p-Sh0ICmPV-5OQ7XPGJ.js")).createSwipeBackGesture(this.el, () => !this.gestureOrAnimationInProgress && !!this.swipeHandler && this.swipeHandler.canStart(), () => t16(), (t17) => {
         var i16;
         return null === (i16 = this.ani) || void 0 === i16 ? void 0 : i16.progressStep(t17);
       }, (t17, i16, s21) => {
@@ -7609,9 +7609,9 @@ var d7 = Vn(class extends I {
   componentDidLoad() {
     this.rIC(() => __async(this, null, function* () {
       const t16 = s5(window, "hybrid");
-      if (n.getBoolean("_testing") || import("./p-C4t5ymfq-BCF5RPLI.js").then((t17) => t17.startTapClick(n)), n.getBoolean("statusTap", t16) && import("./p-D7bSXQD3-7FIXGSIQ.js").then((t17) => t17.startStatusTap()), n.getBoolean("inputShims", m9())) {
+      if (n.getBoolean("_testing") || import("./p-C4t5ymfq-GJPVYCYA.js").then((t17) => t17.startTapClick(n)), n.getBoolean("statusTap", t16) && import("./p-D7bSXQD3-7FIXGSIQ.js").then((t17) => t17.startStatusTap()), n.getBoolean("inputShims", m9())) {
         const t17 = s5(window, "ios") ? "ios" : "android";
-        import("./p-D5Ubpm7D-WLQ4ESXN.js").then((e17) => e17.startInputShims(n, t17));
+        import("./p-D5Ubpm7D-DOJJMWAO.js").then((e17) => e17.startInputShims(n, t17));
       }
       const e16 = yield import("./p-Bz0dSlXZ-DD6L5PWV.js"), i16 = t16 || o3();
       n.getBoolean("hardwareBackButton", i16) ? e16.startHardwareBackButton() : (o3() && u("[ion-app] - experimentalCloseWatcher was set to `true`, but hardwareBackButton was set to `false`. Both config options must be `true` for the Close Watcher API to be used."), e16.blockHardwareBackButton()), "undefined" != typeof window && import("./p-D6Ynv7Xh-4MGJXAUF.js").then((t17) => t17.startKeyboardAssist(window)), import("./p-BmVRXR1y-2VFVFMH5.js").then((t17) => this.focusVisible = t17.startFocusVisible());
@@ -16277,7 +16277,7 @@ var C4 = Vn(class extends I {
   }
   componentDidLoad() {
     return __async(this, null, function* () {
-      this.didLoad = true, this.rootChanged(), this.gesture = (yield import("./p-Sh0ICmPV-GSCFMHC7.js")).createSwipeBackGesture(this.el, this.canStart.bind(this), this.onStart.bind(this), this.onMove.bind(this), this.onEnd.bind(this)), this.swipeGestureChanged();
+      this.didLoad = true, this.rootChanged(), this.gesture = (yield import("./p-Sh0ICmPV-5OQ7XPGJ.js")).createSwipeBackGesture(this.el, this.canStart.bind(this), this.onStart.bind(this), this.onMove.bind(this), this.onEnd.bind(this)), this.swipeGestureChanged();
     });
   }
   connectedCallback() {

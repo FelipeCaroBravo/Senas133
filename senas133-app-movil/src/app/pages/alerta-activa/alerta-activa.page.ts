@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { NgClass, NgIf } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonContent } from '@ionic/angular/standalone';
+import { IonContent, ToastController } from '@ionic/angular/standalone';
 import { Subscription } from 'rxjs';
 
 import { EmergenciaService } from '../../core/services/emergencia.service';
@@ -20,12 +20,14 @@ import { Emergencia } from '../../core/models/emergencia.model';
 })
 export class AlertaActivaPage implements OnDestroy {
   emergencia?: Emergencia;
+  ayudaAbierta = false;
   private subscription?: Subscription;
 
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly emergenciaService: EmergenciaService
+    private readonly emergenciaService: EmergenciaService,
+    private readonly toastController: ToastController
   ) {}
 
   ionViewWillEnter(): void {
@@ -113,6 +115,18 @@ export class AlertaActivaPage implements OnDestroy {
         console.error(error);
       }
     });
+  }
+
+  async cancelarAlerta(): Promise<void> {
+    const toast = await this.toastController.create({
+      message: 'Alerta cancelada correctamente.',
+      duration: 2200,
+      position: 'top',
+      color: 'success'
+    });
+
+    await toast.present();
+    await this.router.navigateByUrl('/emergencias');
   }
 
   volver(): void {

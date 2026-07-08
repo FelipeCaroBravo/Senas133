@@ -1,31 +1,91 @@
 <ion-content [fullscreen]="true">
-  <main class="page-shell inicio-shell">
+  <main class="page-shell">
+  <div class="inicio-shell">
+
     <section class="brand-block">
-      <div class="shield-circle" aria-label="Protección y seguridad">🛡️</div>
-      <h1>Mediación Directa</h1>
-      <p>Plataforma de asistencia digital</p>
+      <div class="brand-logo">
+        <img
+          class="brand-symbol"
+          src="assets/img/logo-senas133.png"
+          alt="Ícono de manos en lengua de señas">
+
+        <h1 class="brand-title" aria-label="Señas 133">
+          <span class="brand-name">SEÑAS</span>
+          <span class="brand-number">133</span>
+        </h1>
+      </div>
     </section>
 
-    <section class="actions-block">
-      <button class="primary-btn" type="button" (click)="ingresarPin()">
-        Ingresar con PIN
-      </button>
+      <div class="subtitle-row">
+        <span></span>
+        <p>Ayuda policial</p>
+        <span></span>
+      </div>
 
+    <section class="video-preview-card">
+      <img
+        class="video-preview-img"
+        src="assets/img/video-lsch-verde.png"
+        alt="Video explicativo en lengua de señas chilena">
+    </section>
+
+    <section class="welcome-copy">
+      <h2>
+        Te damos la bienvenida
+        <br>
+        a SEÑAS <span class="welcome-133">133</span>
+      </h2>
+      <!--
+      <p>Una app pensada para una ayuda policial más accesible.</p>
+      <strong>Acompañamiento más simple y rápido.</strong>
+      -->
+    </section>
+
+    <!--<section class="benefits-card" aria-label="Beneficios de la aplicación">
+      <div class="benefit-item">
+        <img src="assets/img/icono-policia.png" alt="Policía">
+        <strong>Policía</strong>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="benefit-item">
+        <img src="assets/img/icono-privado.png" alt="Privado">
+        <strong>Privado</strong>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="benefit-item">
+        <img src="assets/img/icono-rapido.png" alt="Rápido">
+        <strong>Rápido</strong>
+      </div>
+    </section>-->
+
+    <section class="actions-block">
       <button
-        class="link-btn"
+        class="start-btn"
         type="button"
         (click)="claveUnica()"
         [disabled]="cargandoClaveUnica">
-        {{ cargandoClaveUnica ? 'Validando identidad...' : '¿Nuevo usuario? Ingresa con Clave Única' }}
+
+        <span>
+          {{ cargandoClaveUnica ? 'VALIDANDO...' : 'COMENZAR' }}
+        </span>
       </button>
+
+      <!--
+      <button class="help-video-btn" type="button">
+        <span class="play-circle">▶</span>
+
+        <span class="help-text">
+          <strong>Ver explicación en LSCh</strong>
+          <small>Video en lengua de señas</small>
+        </span>
+      </button>
+      -->
     </section>
 
-    <button
-      class="ghost-btn"
-      type="button"
-      aria-label="Modo camuflaje"
-      (click)="camuflaje()">
-      👻
-    </button>
-  </main>
+  </div>
+</main>
 </ion-content>

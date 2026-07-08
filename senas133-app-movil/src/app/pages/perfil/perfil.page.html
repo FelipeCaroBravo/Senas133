@@ -2,22 +2,30 @@
   <main class="page-shell profile-shell">
     <header class="header-simple">
       <button class="back-btn" type="button" (click)="volver()">‹</button>
+
       <h1>Mi Perfil</h1>
-      <div class="header-actions">
-        <button class="icon-btn" type="button">?</button>
-      </div>
+
+      <div class="header-actions"></div>
     </header>
 
     <section class="screen-padding">
-      <div class="avatar">♙</div>
+      <button
+        class="profile-video-card"
+        type="button"
+        (click)="ayudaAbierta = true"
+        aria-label="Ver ayuda en lengua de señas chilena">
+        <img
+          src="assets/img/video-pin-lsch.png"
+          alt="Video de ayuda en lengua de señas chilena">
+      </button>
 
-      <label class="form-label">Dirección Actual</label>
+      <label class="form-label">Dirección actual</label>
       <div class="editable-field">
         <input [(ngModel)]="direccionPrincipal" placeholder="Av. Los Carrera 123, Depto 402" />
         <span>✎</span>
       </div>
 
-      <label class="form-label">Número de Teléfono</label>
+      <label class="form-label">Número de teléfono</label>
       <div class="editable-field">
         <input [(ngModel)]="telefono" placeholder="+56 9 1234 5678" />
         <span>✎</span>
@@ -27,7 +35,43 @@
     </section>
 
     <div class="bottom-action">
-      <button class="primary-btn" type="button" (click)="guardar()" [disabled]="guardando">Guardar Cambios</button>
+      <button
+        class="primary-btn"
+        type="button"
+        (click)="guardar()"
+        [disabled]="guardando">
+        {{ guardando ? 'Guardando...' : 'Guardar cambios' }}
+      </button>
     </div>
+
+    <section class="lsch-app-overlay" *ngIf="ayudaAbierta">
+      <button
+        class="lsch-close-btn"
+        type="button"
+        (click)="ayudaAbierta = false"
+        aria-label="Cerrar ayuda">
+        ×
+      </button>
+
+      <div class="lsch-video-card">
+        <div class="lsch-video-box">
+          <img
+            src="assets/img/video-lsch.png"
+            alt="Video explicativo en lengua de señas chilena">
+        </div>
+
+        <div class="lsch-info">
+          <h2>Ayuda en LSCh</h2>
+          <p>Este video explica cómo usar tu perfil.</p>
+
+          <button
+            class="lsch-understood-btn"
+            type="button"
+            (click)="ayudaAbierta = false">
+            Entendido
+          </button>
+        </div>
+      </div>
+    </section>
   </main>
 </ion-content>

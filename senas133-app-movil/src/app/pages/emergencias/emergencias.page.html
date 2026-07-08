@@ -1,84 +1,188 @@
 <ion-content [fullscreen]="true">
   <main class="page-shell emergencias-shell">
-    <header class="top-emergency">
-      <button class="back-btn" type="button" (click)="volver()">‹</button>
 
-      <div>
-        <h1>Emergencia</h1>
-        <p><span></span> Conectado a Central</p>
+    <div class="phone-status-bar">
+      <span class="status-time">{{ horaActual }}</span>
+
+      <div class="status-right">
+        <button
+          class="status-wifi"
+          type="button"
+          [class.offline]="sinInternet"
+          (click)="alternarInternet()"
+          aria-label="Cambiar estado de conexión">
+          <i
+            class="bi"
+            [class.bi-wifi]="!sinInternet"
+            [class.bi-wifi-off]="sinInternet">
+          </i>
+        </button>
+
+        <span class="battery-icon">
+          <i class="bi bi-battery-full"></i>
+        </span>
+      </div>
+    </div>
+
+    <header class="emergency-header">
+      <div class="status-pill">
+        <span></span>
+        <strong>Conectado a Central</strong>
       </div>
 
       <div class="header-actions">
         <button
-          class="icon-btn"
+          class="round-icon-btn"
           type="button"
           (click)="perfil()"
           aria-label="Perfil">
-          👤
+          <ion-icon name="person-circle-outline"></ion-icon>
         </button>
 
         <button
-          class="icon-btn"
+          class="round-icon-btn play-help-btn"
           type="button"
           (click)="ayudaAbierta = true"
-          aria-label="Ayuda">
-          ?
+          aria-label="Ver ayuda en lengua de señas chilena">
+          <ion-icon name="play-circle-outline"></ion-icon>
         </button>
       </div>
     </header>
 
-    <section class="main-red-wrap">
+    <section class="emergency-content">
+
       <button
-        class="red-card"
+        class="panic-card"
         type="button"
         (click)="enviarRojaInmediata()"
         [disabled]="enviandoRoja">
-        <span class="big-icon" aria-label="Emergencia">🚨</span>
-        <strong>{{ enviandoRoja ? 'Enviando...' : 'Emergencia' }}</strong>
-        <small>Robos, asaltos o violencia</small>
+
+        <div class="siren-circle">
+          <img
+            src="assets/img/icono-peligro.png"
+            alt="Peligro">
+        </div>
+
+        <h1>
+          {{ enviandoRoja ? 'Enviando...' : 'Peligro' }}
+        </h1>
+
+        <h2>Ayuda urgente</h2>
+
+        <div class="panic-label">
+          Pedir ayuda ahora
+        </div>
+
+        <div class="panic-grid">
+          <div class="panic-item">
+            <img
+              src="assets/img/icono-peligro-grid.png"
+              alt="Peligro">
+            <strong>PELIGRO</strong>
+          </div>
+
+          <div class="panic-item">
+            <img
+              src="assets/img/icono-robo-casa.png"
+              alt="Robo en casa">
+            <strong>ROBO / CASA</strong>
+          </div>
+
+          <div class="panic-item">
+            <img
+              src="assets/img/icono-arma.png"
+              alt="Arma">
+            <strong>ARMA</strong>
+          </div>
+
+          <div class="panic-item">
+            <img
+              src="assets/img/icono-golpe.png"
+              alt="Golpe">
+            <strong>GOLPE</strong>
+          </div>
+        </div>
       </button>
+
+      <button
+        class="support-card orange-card"
+        type="button"
+        (click)="abrirCategoria('ASISTENCIA_VIAL')">
+
+        <div class="support-icon">
+          <img
+            src="assets/img/icono-apoyo-calle.png"
+            alt="Apoyo / Calle">
+        </div>
+
+        <div class="support-text">
+          <strong>Apoyo en la calle</strong>
+          <span>Choque, pelea o problema</span>
+        </div>
+
+        <div class="support-arrow">›</div>
+      </button>
+
+      <button
+        class="support-card blue-card"
+        type="button"
+        (click)="abrirCategoria('SOSPECHA_PREVENCION')">
+
+        <div class="support-icon">
+          <img
+            src="assets/img/icono-veo-algo-raro.png"
+            alt="Veo algo raro">
+        </div>
+
+        <div class="support-text">
+          <strong>Veo algo raro</strong>
+          <span>Personas o autos extraños</span>
+        </div>
+
+        <div class="support-arrow">›</div>
+      </button>
+
     </section>
 
-    <nav class="bottom-tabs">
-      <button type="button" (click)="abrirCategoria('ASISTENCIA_VIAL')">
-        <span aria-label="Accidente">⚠️</span>
-        <strong>Accidente</strong>
+    <button
+      class="floating-lsch-btn"
+      type="button"
+      (click)="irCamuflaje()"
+      aria-label="Modo camuflaje">
+      <img src="assets/img/logo-senas133.png" alt="">
+    </button>
+
+    <section class="lsch-app-overlay" *ngIf="ayudaAbierta">
+      <button
+        class="lsch-close-btn"
+        type="button"
+        (click)="ayudaAbierta = false"
+        aria-label="Cerrar ayuda">
+        ×
       </button>
 
-      <button type="button" (click)="abrirCategoria('SOSPECHA_PREVENCION')">
-        <span aria-label="Algo extraño">👁️</span>
-        <strong>Algo Extraño</strong>
-      </button>
-    </nav>
+      <div class="lsch-video-card">
+        <div class="lsch-video-box">
+          <img
+            src="assets/img/video-lsch.png"
+            alt="Video explicativo en lengua de señas chilena">
+        </div>
 
-    <ion-modal [isOpen]="ayudaAbierta" (didDismiss)="ayudaAbierta = false">
-      <ng-template>
-        <ion-content>
-          <section class="help-overlay">
-            <div class="help-card">
-              <div class="gif-box">
-                <div>🤟</div>
-                <span>GIF Lengua de Señas</span>
-              </div>
+        <div class="lsch-info">
+          <h2>Ayuda en LSCh</h2>
+          <p>Este video explica cómo usar esta pantalla.</p>
 
-              <div class="help-text">
-                <h2>¿Cómo usar la alerta?</h2>
-                <p>
-                  Presiona el botón rojo grande al centro para enviar tu ubicación
-                  a la policía inmediatamente.
-                </p>
+          <button
+            class="lsch-understood-btn"
+            type="button"
+            (click)="ayudaAbierta = false">
+            Entendido
+          </button>
+        </div>
+      </div>
+    </section>
 
-                <button
-                  class="primary-btn"
-                  type="button"
-                  (click)="ayudaAbierta = false">
-                  Entendido
-                </button>
-              </div>
-            </div>
-          </section>
-        </ion-content>
-      </ng-template>
-    </ion-modal>
   </main>
+
+  
 </ion-content>

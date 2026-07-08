@@ -1,47 +1,110 @@
 <ion-content [fullscreen]="true">
   <main class="page-shell perfil-shell">
-    <header class="header-simple">
+
+    <header class="profile-header">
       <button class="back-btn" type="button" (click)="volver()">‹</button>
+
       <h1>Completar Perfil</h1>
     </header>
 
     <section class="screen-padding">
-      <div class="success-box">
-        <span>✓</span>
-        <strong>Identidad validada exitosamente con Clave Única.</strong>
+
+    
+
+    <div class="validation-status-box">
+      <div class="validation-text">
+        <span class="validation-check" aria-hidden="true">
+          <svg viewBox="0 0 16 16">
+            <path d="M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+            <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+          </svg>
+        </span>
+        <span>Identidad validada con</span>
       </div>
 
-      <label class="form-label">Dirección Principal</label>
-      <input class="input-box" [(ngModel)]="direccionPrincipal" placeholder="Ej. Av. Los Carrera 123" />
+      <img
+        src="assets/img/logo-claveunica.png"
+        alt="ClaveÚnica"
+        class="validation-clave-logo">
+    </div>
 
-      <label class="form-label">Número de Teléfono</label>
-      <input class="input-box" [(ngModel)]="telefono" placeholder="+56 9" />
+    <div class="success-video-card">
+      <img
+        src="assets/img/video-validacion-lsch.png"
+        alt="Video explicativo en lengua de señas chilena sobre identidad validada"
+        class="success-video-img">
+    </div>
+      
+      <label class="form-label with-icon">
+        <span class="label-svg" aria-hidden="true">
+          <svg viewBox="0 0 16 16">
+            <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"/>
+            <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z"/>
+          </svg>
+        </span>
+        <span>Dirección de tu casa</span>
+      </label>
 
-      <div class="divider"></div>
-      <h2>Crea tu PIN de acceso rápido</h2>
+      <input
+        class="input-box"
+        [(ngModel)]="direccionPrincipal"
+        placeholder="Ej. Av. Los Carrera 123" />
 
-<div class="pin-box">
-  <ion-input
-    class="pin-input"
-    type="tel"
-    inputmode="numeric"
-    maxlength="4"
-    placeholder="••••"
-    [(ngModel)]="pin"
-    (ionInput)="validarPin($event)">
-  </ion-input>
+      <label class="form-label with-icon">
+        <span class="label-svg" aria-hidden="true">
+          <svg viewBox="0 0 16 16">
+            <path d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z"/>
+          </svg>
+        </span>
+        <span>Tu número</span>
+      </label>
 
-  <div class="pin-lines" aria-label="PIN">
-    <span [class.active]="pin.length > 0"></span>
-    <span [class.active]="pin.length > 1"></span>
-    <span [class.active]="pin.length > 2"></span>
-    <span [class.active]="pin.length > 3"></span>
-  </div>
-</div>
+      <input
+        class="input-box"
+        [(ngModel)]="telefono"
+        placeholder="+56 9" />
+
+      <div class="section-divider"></div>
+
+      <h2>Crea tu clave de 4 números</h2>
+
+      <div class="pin-box">
+        <ion-input
+          class="pin-input"
+          type="tel"
+          inputmode="numeric"
+          maxlength="4"
+          [value]="pin"
+          (ionInput)="validarPin($event)">
+        </ion-input>
+
+        <div class="pin-dots-custom" aria-label="PIN">
+          <span [class.active]="pin.length > 0"></span>
+          <span [class.active]="pin.length > 1"></span>
+          <span [class.active]="pin.length > 2"></span>
+          <span [class.active]="pin.length > 3"></span>
+        </div>
+
+        <div class="pin-lines">
+          <span [class.active]="pin.length > 0"></span>
+          <span [class.active]="pin.length > 1"></span>
+          <span [class.active]="pin.length > 2"></span>
+          <span [class.active]="pin.length > 3"></span>
+        </div>
+      </div>
+
     </section>
 
     <div class="bottom-action">
-      <button class="primary-btn" type="button" (click)="finalizar()" [disabled]="guardando">Finalizar Registro</button>
+      <button
+        class="primary-btn"
+        type="button"
+        (click)="finalizar()"
+        [disabled]="guardando">
+
+        {{ guardando ? 'Guardando...' : 'Guardar' }}
+      </button>
     </div>
+
   </main>
 </ion-content>

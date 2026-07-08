@@ -1,9 +1,9 @@
 import {
-  d as d3
-} from "./chunk-EFC5T3F5.js";
-import {
   d as d2
 } from "./chunk-JRRVO33B.js";
+import {
+  d as d3
+} from "./chunk-EFC5T3F5.js";
 import {
   P,
   d,
@@ -296,7 +296,7 @@ var g = (n3) => {
   e.classList.remove("ion-page-invisible"), e.style.removeProperty("pointer-events"), void 0 !== i2 && (i2.classList.remove("ion-page-invisible"), i2.style.removeProperty("pointer-events")), w(e);
 };
 var y = (n3) => __async(void 0, null, function* () {
-  if (n3.leavingEl && n3.animated && 0 !== n3.duration) return n3.animationBuilder ? n3.animationBuilder : "ios" === n3.mode ? (yield import("./p-C1aScSTo-Y5WSFNLP.js")).iosTransitionAnimation : (yield import("./p-DIE4pXMl-TDEMXSE4.js")).mdTransitionAnimation;
+  if (n3.leavingEl && n3.animated && 0 !== n3.duration) return n3.animationBuilder ? n3.animationBuilder : "ios" === n3.mode ? (yield import("./p-C1aScSTo-V7TQUFT7.js")).iosTransitionAnimation : (yield import("./p-DIE4pXMl-WQIZHGMX.js")).mdTransitionAnimation;
 });
 var h = (n3, e) => __async(void 0, null, function* () {
   yield k(e, true);
@@ -401,4 +401,4 @@ export {
    * (C) Ionic http://ionicframework.com - MIT License
    *)
 */
-//# sourceMappingURL=chunk-5CPEFQYL.js.map
+//# sourceMappingURL=chunk-5G3A3PTU.js.map

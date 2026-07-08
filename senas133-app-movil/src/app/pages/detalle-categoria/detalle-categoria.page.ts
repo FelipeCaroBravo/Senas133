@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgFor, NgClass } from '@angular/common';
+import { NgFor, NgClass, NgIf } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   IonContent,
@@ -17,7 +17,7 @@ import {
 @Component({
   standalone: true,
   selector: 'app-detalle-categoria',
-  imports: [IonContent, NgFor, NgClass],
+  imports: [IonContent, NgFor, NgClass, NgIf],
   templateUrl: './detalle-categoria.page.html',
   styleUrl: './detalle-categoria.page.scss'
 })
@@ -26,6 +26,11 @@ export class DetalleCategoriaPage {
   emergenciaId?: number;
   opciones: readonly OpcionEmergencia[] = [];
   enviando = false;
+  ayudaAbierta = false;
+
+  get sinInternet(): boolean {
+    return localStorage.getItem('sinInternetDemo') === 'true' || !navigator.onLine;
+  }
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -47,14 +52,14 @@ export class DetalleCategoriaPage {
 
   get titulo(): string {
     if (this.tipo === 'DELITOS_GRAVES') {
-      return 'Delitos Graves';
+      return 'Peligro';
     }
 
     if (this.tipo === 'ASISTENCIA_VIAL') {
-      return 'Asistencia / Vial';
+      return 'Apoyo / Calle';
     }
 
-    return 'Sospecha y Prevención';
+    return 'Veo algo raro';
   }
 
   get claseColor(): string {
@@ -75,6 +80,35 @@ export class DetalleCategoriaPage {
     }
 
     this.enviando = true;
+
+    if (this.sinInternet) {
+      try {
+        const ubicacion = await this.location.getCurrentLocation();
+
+        this.enviando = false;
+
+        await this.router.navigate(['/sms-emergencia'], {
+          queryParams: {
+            tipo: `${this.titulo} - ${opcion.titulo}`,
+            mensaje: opcion.descripcion,
+            latitud: ubicacion.latitud,
+            longitud: ubicacion.longitud
+          }
+        });
+
+        return;
+      } catch (error) {
+        console.error(error);
+        this.enviando = false;
+
+        await this.mostrarToast(
+          'No se pudo obtener la ubicación para preparar el SMS.',
+          'danger'
+        );
+
+        return;
+      }
+    }
 
     if (this.emergenciaId) {
       this.emergenciaService.completarDetalle(this.emergenciaId, {
@@ -160,6 +194,14 @@ export class DetalleCategoriaPage {
     }
 
     this.router.navigateByUrl('/emergencias');
+  }
+
+  irCamuflaje(): void {
+    if (this.enviando) {
+      return;
+    }
+
+    this.router.navigateByUrl('/camuflaje');
   }
 
   private async mostrarToast(

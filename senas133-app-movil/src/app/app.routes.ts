@@ -18,6 +18,12 @@ export const routes: Routes = [
     path: 'emergencias',
     loadComponent: () => import('./pages/emergencias/emergencias.page').then(m => m.EmergenciasPage)
   },
+
+  {
+    path: 'sms-emergencia',
+    loadComponent: () => import('./pages/sms-emergencia/sms-emergencia.page').then(m => m.SmsEmergenciaPage)
+  },
+  
   {
     path: 'perfil',
     loadComponent: () => import('./pages/perfil/perfil.page').then(m => m.PerfilPage)

@@ -58,5 +58,6 @@ export interface OpcionEmergencia {
   subtipo: string;
   titulo: string;
   descripcion: string;
-  icono: string;
+  icono?: string;
+  iconoImg?: string;
 }

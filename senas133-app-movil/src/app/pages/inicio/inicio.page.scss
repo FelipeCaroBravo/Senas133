@@ -1,65 +1,151 @@
 .inicio-shell {
-  min-height: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 34px;
+  padding: 28px 26px 34px;
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
 }
+
+/* LOGO */
 
 .brand-block {
   text-align: center;
-  margin-top: 130px;
-
-  .shield-circle {
-    margin: 0 auto 20px;
-    width: 96px;
-    height: 96px;
-    border-radius: 50%;
-    background: #dceaff;
-    color: #2463ff;
-    display: grid;
-    place-items: center;
-    font-size: 64px;
-    font-weight: 900;
-  }
-
-  h1 {
-    margin: 0;
-    color: var(--app-ink);
-    font-size: 30px;
-    line-height: 1.1;
-    font-weight: 900;
-  }
-
-  p {
-    margin: 14px 0 0;
-    color: #5f6d83;
-    font-size: 16px;
-    font-weight: 600;
-  }
+  margin-top: 18px;
+  position: relative;
+  z-index: 2;
 }
+
+.brand-logo {
+  text-align: center;
+}
+
+.brand-symbol {
+  width: 74px;
+  height: auto;
+  display: block;
+  margin: 0 auto 8px;
+  object-fit: contain;
+  filter: brightness(0) saturate(100%) invert(18%) sepia(26%) saturate(1166%) hue-rotate(124deg) brightness(90%) contrast(96%);
+}
+
+.brand-title {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.9px;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 7px;
+}
+
+.brand-name {
+  color: #063b34;
+}
+
+.brand-number {
+  color: #56b878;
+}
+
+/* SUBTÍTULO */
+
+.subtitle-row {
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.subtitle-row span {
+  width: 48px;
+  height: 2px;
+  background: #56b878;
+  border-radius: 999px;
+}
+
+.subtitle-row p {
+  margin: 0;
+  color: #56b878;
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: -0.3px;
+}
+
+/* VIDEO */
+
+.video-preview-card {
+  width: 100%;
+  height: 340px;
+  margin-top: 18px;
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  background: transparent;
+  transform: scale(1.13) translateY(17px);
+  transform-origin: center center;
+}
+
+/* TEXTO BIENVENIDA */
+
+.welcome-copy {
+  margin-top: 17px;
+  margin-bottom: 28px;
+  color: #071f18;
+  text-align: left;
+  position: relative;
+  z-index: 2;
+}
+
+.welcome-copy h2 {
+  margin: 0;
+  max-width: 320px;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: -0.6px;
+}
+
+.welcome-133 {
+  color: #56b878;
+}
+
+/* BOTÓN */
 
 .actions-block {
-  margin-top: 56px;
+  margin-top: auto;
+  position: relative;
+  z-index: 2;
 }
 
-.link-btn {
-  display: block;
+.start-btn {
   width: 100%;
+  min-height: 66px;
   border: 0;
-  background: transparent;
-  color: #637089;
-  margin-top: 24px;
-  font-size: 14px;
-  font-weight: 800;
-}
-
-.ghost-btn {
-  position: absolute;
-  right: 34px;
-  bottom: 32px;
-  border: 0;
-  background: transparent;
-  font-size: 26px;
-  opacity: 0.25;
+  border-radius: 999px;
+  background: #063b34;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 16px 28px rgba(6, 59, 52, 0.22);
 }

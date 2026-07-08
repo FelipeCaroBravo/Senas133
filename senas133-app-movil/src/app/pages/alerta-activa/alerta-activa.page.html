@@ -1,9 +1,22 @@
 <ion-content [fullscreen]="true">
   <main class="page-shell active-shell" [ngClass]="claseColor">
-    <button class="back-btn active-back" type="button" (click)="volver()">‹</button>
+    <header class="active-header">
+      <button class="back-btn active-back" type="button" (click)="volver()">‹</button>
+
+      <button
+        class="help-floating"
+        type="button"
+        aria-label="Ver ayuda en lengua de señas"
+        (click)="ayudaAbierta = true">
+        <span class="play-symbol">▶</span>
+      </button>
+    </header>
 
     <section class="active-top">
-      <div class="siren">🚨</div>
+      <div class="siren">
+        <img src="assets/img/icono-peligro.png" alt="Alerta activada">
+      </div>
+
       <h1>Alerta Activada</h1>
       <p>{{ subtitulo }}</p>
     </section>
@@ -14,47 +27,25 @@
           <span class="ok">✅</span>
 
           <div>
-            <strong>Central Notificada</strong>
+            <strong>Carabineros ya sabe</strong>
             <small>
               {{
                 centralNotificada
-                  ? 'Tu reporte ha sido recibido y está en proceso.'
-                  : 'Tu reporte fue enviado. Esperando confirmación.'
+                  ? 'Tu alerta fue recibida. Espera ayuda.'
+                  : 'Tu alerta fue enviada. Espera ayuda.'
               }}
             </small>
           </div>
         </div>
 
-        <div
-          class="status-row"
-          *ngIf="e.tipo === 'DELITOS_GRAVES'; else patrullaRow">
-
-          <span class="gps" aria-label="Ubicación compartida">📍</span>
+        <div class="status-row">
+          <span class="gps" aria-label="Ubicación enviada">📍</span>
 
           <div>
-            <strong>Ubicación compartida</strong>
-            <small>
-              Precisión: {{ e.precisionMetros || 5 }} metros
-            </small>
+            <strong>Carabineros ve tu ubicación</strong>
+            <small>Ubicación enviada correctamente.</small>
           </div>
         </div>
-
-        <ng-template #patrullaRow>
-          <div class="status-row">
-            <span class="shield" aria-label="Carabinero en camino">🚓</span>
-
-            <div>
-              <strong>Carabinero en camino</strong>
-              <small>
-                {{
-                  patrulla
-                    ? 'Unidad despachada hacia tu ubicación.'
-                    : 'Esperando despacho de unidad.'
-                }}
-              </small>
-            </div>
-          </div>
-        </ng-template>
       </section>
     </ng-container>
 
@@ -71,6 +62,13 @@
       </section>
     </ng-template>
 
+    <button
+      class="cancel-alert-btn"
+      type="button"
+      (click)="cancelarAlerta()">
+      Cancelar alerta
+    </button>
+
     <button class="interpreter-btn" type="button" (click)="conectarInterprete()">
       <span>🎥</span>
 
@@ -79,5 +77,20 @@
         <small>Videollamada segura</small>
       </div>
     </button>
+    <section class="alert-video-overlay" *ngIf="ayudaAbierta">
+      <div class="alert-video-card">
+        <button
+          class="alert-video-close"
+          type="button"
+          aria-label="Cerrar video"
+          (click)="ayudaAbierta = false">
+          ×
+        </button>
+
+        <img
+          src="assets/img/video-alerta.png"
+          alt="Video de ayuda en lengua de señas">
+      </div>
+    </section>
   </main>
 </ion-content>

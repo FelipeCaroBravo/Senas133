@@ -1,0 +1,60 @@
+<ion-content [fullscreen]="true">
+  <main class="page-shell sms-shell">
+    <header class="sms-header">
+      <button class="back-btn" type="button" (click)="volver()">‹</button>
+
+      <div class="status-offline">
+        <i class="bi bi-wifi-off"></i>
+        <span>Sin internet</span>
+      </div>
+    </header>
+
+    <section class="sms-content">
+      <button
+        class="sms-video-card"
+        type="button"
+        aria-label="Video explicativo en lengua de señas">
+        <img
+          src="assets/img/video-pin-lsch.png"
+          alt="Video explicativo en lengua de señas chilena">
+      </button>
+
+      <h1 class="sms-title">
+        <span>Usaremos SMS</span>
+        <i class="bi bi-envelope-arrow-up-fill"></i>
+      </h1>
+      <p class="sms-subtitle">
+        Tu alerta y ubicación están listas para enviar por mensaje.
+      </p>
+
+      <section class="sms-card">
+        <strong>Mensaje preparado</strong>
+
+        <p>{{ textoSms }}</p>
+      </section>
+
+      <section class="location-card">
+        <div>
+          <strong>Ubicación incluida</strong>
+          <small>{{ latitud }}, {{ longitud }}</small>
+        </div>
+      </section>
+    </section>
+
+    <section class="sms-actions">
+      <button
+        class="send-sms-btn"
+        type="button"
+        (click)="enviarSms()">
+        {{ smsEnviado ? 'SMS preparado' : 'Enviar SMS' }}
+      </button>
+
+      <button
+        class="back-emergency-btn"
+        type="button"
+        (click)="volver()">
+        Volver
+      </button>
+    </section>
+  </main>
+</ion-content>

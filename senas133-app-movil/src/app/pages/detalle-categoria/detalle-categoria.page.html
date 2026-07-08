@@ -3,7 +3,13 @@
     <header class="category-header" [ngClass]="claseColor">
       <button class="back-btn light" type="button" (click)="volver()">‹</button>
       <h1>{{ titulo }}</h1>
-      <button class="help-floating" type="button" aria-label="Ayuda">?</button>
+      <button
+        class="help-floating"
+        type="button"
+        aria-label="Ver ayuda en lengua de señas"
+        (click)="ayudaAbierta = true">
+        <span class="play-symbol">▶</span>
+      </button>
     </header>
 
     <section class="options-list">
@@ -14,7 +20,14 @@
         (click)="seleccionar(opcion)"
         [disabled]="enviando">
         <span class="option-icon" [ngClass]="claseColor">
-          {{ opcion.icono }}
+          <img
+            *ngIf="opcion.icono?.includes('assets/img'); else emojiIcon"
+            [src]="opcion.icono"
+            [alt]="opcion.titulo">
+
+          <ng-template #emojiIcon>
+            {{ opcion.icono }}
+          </ng-template>
         </span>
 
         <div>
@@ -22,6 +35,44 @@
           <small>{{ opcion.descripcion }}</small>
         </div>
       </button>
+    </section>
+
+    <button
+      class="floating-lsch-btn"
+      type="button"
+      aria-label="Modo camuflaje"
+      (click)="irCamuflaje()">
+      <img src="assets/img/logo-senas133.png" alt="">
+    </button>
+
+    <section class="lsch-app-overlay" *ngIf="ayudaAbierta">
+      <button
+        class="lsch-close-btn"
+        type="button"
+        (click)="ayudaAbierta = false"
+        aria-label="Cerrar ayuda">
+        ×
+      </button>
+
+      <div class="lsch-video-card">
+        <div class="lsch-video-box">
+          <img
+            src="assets/img/video-lsch.png"
+            alt="Video explicativo en lengua de señas chilena">
+        </div>
+
+        <div class="lsch-info">
+          <h2>Ayuda en LSCh</h2>
+          <p>Este video explica cómo elegir una opción.</p>
+
+          <button
+            class="lsch-understood-btn"
+            type="button"
+            (click)="ayudaAbierta = false">
+            Entendido
+          </button>
+        </div>
+      </div>
     </section>
   </main>
 </ion-content>

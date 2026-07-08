@@ -47,19 +47,75 @@ export class EmergenciaService {
   opcionesPorTipo(tipo: TipoEmergencia) {
     const data = {
       DELITOS_GRAVES: [
-        { tipo, subtipo: 'ROBO_CON_VIOLENCIA', titulo: 'Robo con Violencia', descripcion: 'Toque para enviar detalles a la central', icono: '🚨' },
-        { tipo, subtipo: 'ASALTO_EN_CURSO', titulo: 'Asalto en Curso', descripcion: 'Toque para enviar detalles a la central', icono: '⚡' },
-        { tipo, subtipo: 'AGRESION_FISICA', titulo: 'Agresión Física', descripcion: 'Toque para enviar detalles a la central', icono: '✋' }
+        {
+          tipo,
+          subtipo: 'ROBO_CON_VIOLENCIA',
+          titulo: 'Robo',
+          descripcion: 'Alguien roba o quiere robar',
+          icono: 'assets/img/icono-robo.png'
+        },
+        {
+          tipo,
+          subtipo: 'ASALTO_EN_CURSO',
+          titulo: 'Asalto / Armas',
+          descripcion: 'Veo cuchillo o pistola',
+          icono: 'assets/img/icono-armas.png'
+        },
+        {
+          tipo,
+          subtipo: 'AGRESION_FISICA',
+          titulo: 'Golpe / Pelea',
+          descripcion: 'Personas golpeando o peleando',
+          icono: 'assets/img/icono-golpe-pelea.png'
+        }
       ],
+
       ASISTENCIA_VIAL: [
-        { tipo, subtipo: 'ACCIDENTE_TRANSITO', titulo: 'Accidente de Tránsito', descripcion: 'Toque para enviar detalles a la central', icono: '⚠️' },
-        { tipo, subtipo: 'PERSONA_SOSPECHOSA', titulo: 'Persona Sospechosa', descripcion: 'Toque para enviar detalles a la central', icono: '👥' },
-        { tipo, subtipo: 'PELEAS_DESORDENES', titulo: 'Peleas / Desórdenes', descripcion: 'Toque para enviar detalles a la central', icono: '🔥' }
+        {
+          tipo,
+          subtipo: 'ACCIDENTE_TRANSITO',
+          titulo: 'Choque / Accidente',
+          descripcion: 'Auto chocó o persona herida',
+          icono: 'assets/img/icono-choque.png'
+        },
+        {
+          tipo,
+          subtipo: 'PERSONA_SOSPECHOSA',
+          titulo: 'Persona me sigue',
+          descripcion: 'Alguien me sigue o amenaza',
+          icono: 'assets/img/icono-persona-sigue.png'
+        },
+        {
+          tipo,
+          subtipo: 'PELEAS_DESORDENES',
+          titulo: 'Pelea',
+          descripcion: 'Personas peleando o rompiendo cosas',
+          icono: 'assets/img/icono-pelea.png'
+        }
       ],
+
       SOSPECHA_PREVENCION: [
-        { tipo, subtipo: 'VEHICULO_SOSPECHOSO', titulo: 'Vehículo Sospechoso', descripcion: 'Toque para enviar detalles a la central', icono: '🚙' },
-        { tipo, subtipo: 'PERSONA_MERODEANDO', titulo: 'Persona Merodeando', descripcion: 'Toque para enviar detalles a la central', icono: '👣' },
-        { tipo, subtipo: 'MARCAJE_CASA', titulo: 'Marcaje de Casa', descripcion: 'Toque para enviar detalles a la central', icono: '⌂' }
+        {
+          tipo,
+          subtipo: 'VEHICULO_SOSPECHOSO',
+          titulo: 'Auto extraño',
+          descripcion: 'Auto da vueltas',
+          icono: 'assets/img/icono-auto-extrano.png'
+        },
+        {
+          tipo,
+          subtipo: 'PERSONA_MERODEANDO',
+          titulo: 'Persona extraña',
+          descripcion: 'Persona mira casas o portones',
+          icono: 'assets/img/icono-persona-extrana.png'
+        },
+        {
+          tipo,
+          subtipo: 'MARCAJE_CASA',
+          titulo: 'Marca en puerta',
+          descripcion: 'Marca rara en puerta o reja',
+          icono: 'assets/img/icono-marca-puerta.png'
+        }
       ]
     } as const;
 

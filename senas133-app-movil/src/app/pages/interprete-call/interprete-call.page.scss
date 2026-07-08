@@ -1,11 +1,24 @@
+:host {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+button {
+  font-family: inherit;
+}
+
 .call-shell {
-  min-height: 100%;
+  height: 100%;
+  min-height: 0;
+  box-sizing: border-box;
   background: #111b2c;
-  color: #fff;
+  color: #ffffff;
   display: flex;
   flex-direction: column;
-  padding: 34px 28px 26px;
+  padding: 26px 28px 0;
+  overflow: hidden;
 }
+
+/* HEADER */
 
 .call-header {
   display: flex;
@@ -17,21 +30,27 @@
   .dots {
     position: absolute;
     left: 0;
-    width: 45px;
-    height: 45px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     border: 0;
     background: rgba(255, 255, 255, 0.12);
     color: #c9d4e5;
     font-size: 28px;
+    display: grid;
+    place-items: center;
+    padding: 0;
   }
 
   strong {
     color: #b8c2d3;
-    letter-spacing: 1.5px;
-    font-size: 15px;
+    letter-spacing: 1.8px;
+    font-size: 14px;
+    font-weight: 700;
   }
 }
+
+/* CENTRO */
 
 .call-center {
   flex: 1;
@@ -39,62 +58,70 @@
   place-items: center;
   align-content: center;
   text-align: center;
+  transform: translateY(-22px);
 
   .video-circle {
-    width: 122px;
-    height: 122px;
+    width: 116px;
+    height: 116px;
     border-radius: 50%;
     background: #5737ff;
     border: 5px solid rgba(255, 255, 255, 0.16);
     box-shadow:
       0 0 0 10px rgba(87, 55, 255, 0.18),
-      0 0 30px rgba(87, 55, 255, 0.75);
+      0 0 30px rgba(87, 55, 255, 0.72);
     display: grid;
     place-items: center;
-    font-size: 52px;
-    margin-bottom: 42px;
+    font-size: 48px;
+    margin-bottom: 36px;
   }
 
   h1 {
-    font-size: 25px;
-    font-weight: 1000;
-    margin: 0 0 14px;
+    margin: 0 0 12px;
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -0.35px;
   }
 
   p {
     margin: 0;
     color: #ccd6ef;
-    font-size: 16px;
+    font-size: 15px;
+    font-weight: 400;
   }
 }
 
+/* CONTROLES */
+
 .call-controls {
-  height: 116px;
+  height: 108px;
   background: #1d2a3b;
   border-radius: 26px 26px 0 0;
   display: flex;
   align-items: center;
   justify-content: space-around;
-  margin: 0 -28px -26px;
-  padding: 0 38px;
+  margin: 0 -28px;
+  padding: 0 38px 10px;
 
   button {
     border: 0;
-    width: 58px;
-    height: 58px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     background: #344255;
     color: #d6e0f2;
-    font-size: 25px;
+    font-size: 24px;
     display: grid;
     place-items: center;
+    padding: 0;
   }
 
   .hang {
-    width: 72px;
-    height: 72px;
+    width: 70px;
+    height: 70px;
     background: #ff3044;
-    color: #fff;
+    color: #ffffff;
     box-shadow: 0 8px 20px rgba(255, 48, 68, 0.32);
     transform: rotate(135deg);
   }

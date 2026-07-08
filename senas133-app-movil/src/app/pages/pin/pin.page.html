@@ -4,17 +4,18 @@
       <button class="back-btn" type="button" (click)="volver()">‹</button>
       <h1>Acceso con PIN</h1>
 
-      <div class="header-actions">
-        <button class="icon-btn" type="button" aria-label="Ayuda">
-          ?
-        </button>
-      </div>
+  
     </header>
 
     <section class="pin-content">
-      <div class="avatar" aria-label="Acceso seguro">🔐</div>
+      <div class="pin-video-card">
+        <img
+          src="assets/img/video-pin-lsch.png"
+          alt="Video explicativo en lengua de señas chilena para ingresar PIN"
+          class="pin-video-img">
+      </div>
 
-      <h2>Ingresa tu PIN</h2>
+      <h2 class="pin-title">Ingresa tu PIN</h2>
 
       <div class="pin-dots" aria-label="PIN ingresado">
         <span [class.active]="pin.length > 0"></span>
@@ -33,11 +34,9 @@
         </button>
 
         <button
-          class="keypad-action"
+          class="keypad-empty"
           type="button"
-          (click)="recuperar()"
-          [disabled]="validando">
-          PIN
+          disabled>
         </button>
 
         <button
@@ -48,7 +47,7 @@
         </button>
 
         <button
-          class="keypad-action"
+          class="keypad-action delete-key"
           type="button"
           (click)="borrar()"
           [disabled]="validando">
